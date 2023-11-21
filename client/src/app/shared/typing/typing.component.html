@@ -1,6 +1,9 @@
 <div class="typing-container">
   <span *ngFor="let word of words; let i = index">
     <span
+      [ngClass]="{
+        'correct-word': i === currentIndex,
+      }"
       >{{ word }}</span
     >
     {{ i < words.length - 1 ? " " : "" }}
