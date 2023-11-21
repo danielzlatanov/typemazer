@@ -1,2 +1,12 @@
 <div class="typing-container">
+  <span *ngFor="let word of words; let i = index">
+    <span
+      >{{ word }}</span
+    >
+    {{ i < words.length - 1 ? " " : "" }}
+  </span>
+  <input
+    type="text"
+    [(ngModel)]="userInput"
+  />
 </div>
