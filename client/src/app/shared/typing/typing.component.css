@@ -7,3 +7,8 @@
   color: red;
   text-decoration: underline;
 }
+
+.error-input {
+  background: pink;
+  color: gray;
+}

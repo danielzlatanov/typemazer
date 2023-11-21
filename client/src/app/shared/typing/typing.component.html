@@ -16,6 +16,12 @@
     type="text"
     [(ngModel)]="userInput"
     (input)="onInputChange()"
+    [ngClass]="{
+      'error-input':
+        currentIndex <= words.length - 1 &&
+        userInput &&
+        userInput !== words[currentIndex].slice(0, userInput.length)
+    }"
     (keydown.space)="onSpaceKey($event)"
   />
 </div>
