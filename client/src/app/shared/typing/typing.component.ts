@@ -34,4 +34,9 @@ export class TypingComponent {
     }
   }
 
+  onSpaceKey(event: Event) {
+    if (this.userInput == '') {
+      event.preventDefault();
+    }
+  }
 }

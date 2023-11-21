@@ -9,5 +9,6 @@
     type="text"
     [(ngModel)]="userInput"
     (input)="onInputChange()"
+    (keydown.space)="onSpaceKey($event)"
   />
 </div>
