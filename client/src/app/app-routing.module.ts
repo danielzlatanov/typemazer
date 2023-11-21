@@ -7,6 +7,10 @@ const routes: Routes = [
     redirectTo: '',
     pathMatch: 'full',
   },
+  {
+    path: 'type',
+    loadChildren: () => import('./type/type.module').then((m) => m.TypeModule),
+  },
 ];
 
 @NgModule({
