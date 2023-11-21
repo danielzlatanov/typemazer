@@ -3,6 +3,10 @@
     <span
       [ngClass]="{
         'correct-word': i === currentIndex,
+        'error-word':
+          i === currentIndex &&
+          userInput &&
+          userInput !== words[currentIndex].slice(0, userInput.length)
       }"
       >{{ word }}</span
     >

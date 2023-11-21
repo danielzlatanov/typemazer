@@ -2,3 +2,8 @@
   color: green;
   text-decoration: underline;
 }
+
+.error-word {
+  color: red;
+  text-decoration: underline;
+}
