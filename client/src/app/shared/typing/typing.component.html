@@ -24,4 +24,6 @@
     }"
     (keydown.space)="onSpaceKey($event)"
   />
+
+  <p *ngIf="endTime">total: {{ totalWpm }} wpm</p>
 </div>

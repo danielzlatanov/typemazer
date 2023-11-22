@@ -12,3 +12,8 @@
   background: pink;
   color: gray;
 }
+
+p {
+  color: green;
+  font-weight: 900;
+}
