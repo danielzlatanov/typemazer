@@ -19,11 +19,28 @@ export class TypingComponent implements OnDestroy {
   startTime!: number;
   endTime!: number;
   totalWpm!: number;
+  realTimeWpm!: number;
+  private realTimeWPMTimer: any;
+
+  startRealTimeWPMTimer() {
+    this.realTimeWPMTimer = setInterval(() => {
+      this.calculateRealTimeWPM();
+    }, 2000);
+  }
+
+  stopRealTimeWPMTimer() {
+    clearInterval(this.realTimeWPMTimer);
+    this.realTimeWPMTimer = null;
+  }
+
   onInputChange() {
     if (!this.startTime) {
       this.startTime = Date.now();
       console.log('race has started:');
-      console.log('start time: ', this.startTime);
+    }
+
+    if (!this.realTimeWPMTimer) {
+      this.startRealTimeWPMTimer();
     }
 
     const currentWord = this.words[this.currentIndex] + ' ';
@@ -34,6 +51,7 @@ export class TypingComponent implements OnDestroy {
       (currentWord.trim() === lastWord && this.userInput === lastWord)
     ) {
       this.moveToNextWord();
+      this.calculateRealTimeWPM();
     }
   }
 
@@ -44,9 +62,11 @@ export class TypingComponent implements OnDestroy {
     } else {
       this.endTime = Date.now();
       this.calculateTotalWPM();
+      this.stopRealTimeWPMTimer();
 
-      console.log('Practice completed:');
+      console.log('practice completed:');
       console.log(`your WPM: ${this.totalWpm}`);
+      console.log(`your real-time WPM: ${this.realTimeWpm}`);
     }
   }
 
@@ -59,5 +79,14 @@ export class TypingComponent implements OnDestroy {
   calculateTotalWPM() {
     const minutesElapsed = (this.endTime - this.startTime) / 60000;
     this.totalWpm = Math.round(this.words.length / minutesElapsed);
+  }
+
+  calculateRealTimeWPM() {
+    const minutesElapsed = (Date.now() - this.startTime) / 60000;
+    this.realTimeWpm = Math.round((this.currentIndex + 1) / minutesElapsed);
+  }
+
+  ngOnDestroy() {
+    this.stopRealTimeWPMTimer();
   }
 }
