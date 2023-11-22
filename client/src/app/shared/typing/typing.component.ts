@@ -9,13 +9,16 @@ export class TypingComponent implements OnDestroy {
   // dummyText: string =
   //   "This is some dummy text I've typed just now. Type it as fast as possible.";
   dummyText: string =
-    "How can I just let you walk away, just let you leave without a trace? When I stand here taking every breath with you, you're the only one who really knew me at all.";
+    'Therefore a man shall leave his father and mother and be joined to his wife, and they shall become one flesh.';
 
   words: string[] = this.dummyText.split(/\s+/);
 
-  currentIndex = 0;
   userInput = '';
+  currentIndex = 0;
+  totalCorrectChars = 0;
+  errors = 0;
 
+  totalAccuracy!: number;
   startTime!: number;
   endTime!: number;
   totalWpm!: number;
@@ -50,8 +53,29 @@ export class TypingComponent implements OnDestroy {
       this.userInput === currentWord ||
       (currentWord.trim() === lastWord && this.userInput === lastWord)
     ) {
+      this.totalCorrectChars += 1;
+      if (currentWord.trim() === lastWord && this.userInput === lastWord) {
+        this.totalCorrectChars -= 1;
+      }
+
       this.moveToNextWord();
       this.calculateRealTimeWPM();
+    } else if (
+      this.currentIndex <= this.words.length - 1 &&
+      this.userInput &&
+      this.userInput ===
+        this.words[this.currentIndex].slice(0, this.userInput.length)
+    ) {
+      this.totalCorrectChars += 1;
+      console.log('correct:', this.totalCorrectChars);
+    } else if (
+      this.currentIndex <= this.words.length - 1 &&
+      this.userInput &&
+      this.userInput !==
+        this.words[this.currentIndex].slice(0, this.userInput.length)
+    ) {
+      this.errors += 1;
+      console.log('errors:', this.errors);
     }
   }
 
@@ -62,6 +86,7 @@ export class TypingComponent implements OnDestroy {
     } else {
       this.endTime = Date.now();
       this.calculateTotalWPM();
+      this.calculateTotalAccuracy();
       this.stopRealTimeWPMTimer();
 
       console.log('practice completed:');
@@ -84,6 +109,11 @@ export class TypingComponent implements OnDestroy {
   calculateRealTimeWPM() {
     const minutesElapsed = (Date.now() - this.startTime) / 60000;
     this.realTimeWpm = Math.round((this.currentIndex + 1) / minutesElapsed);
+  }
+
+  calculateTotalAccuracy() {
+    const totalEntries = this.totalCorrectChars + this.errors;
+    this.totalAccuracy = (this.totalCorrectChars / totalEntries) * 100;
   }
 
   ngOnDestroy() {

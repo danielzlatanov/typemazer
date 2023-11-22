@@ -25,6 +25,7 @@
     (keydown.space)="onSpaceKey($event)"
   />
 
-  <p>{{ realTimeWpm || 0 }} wpm</p>
+  <p *ngIf="!endTime">{{ realTimeWpm || 0 }} wpm</p>
   <p *ngIf="endTime">total: {{ totalWpm }} wpm</p>
+  <p *ngIf="endTime">accuracy: {{ totalAccuracy.toFixed(1) }} %</p>
 </div>
