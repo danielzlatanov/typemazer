@@ -21,6 +21,7 @@ export class TypingComponent implements OnDestroy {
   totalAccuracy!: number;
   startTime!: number;
   endTime!: number;
+  totalElapsedTime!: number;
   grossWpm!: number;
   netWpm!: number;
   realTimeWpm!: number;
@@ -78,8 +79,9 @@ export class TypingComponent implements OnDestroy {
       this.userInput = '';
     } else {
       this.endTime = Date.now();
-      this.calculateGrossWPM();
-      this.calculateNetWPM();
+      this.totalElapsedTime = this.calculateElapsedTime();
+      this.calculateGrossWPM(this.totalElapsedTime);
+      this.calculateNetWPM(this.totalElapsedTime);
       this.calculateTotalAccuracy();
       this.stopRealTimeWPMTimer();
 
@@ -93,14 +95,12 @@ export class TypingComponent implements OnDestroy {
     }
   }
 
-  calculateGrossWPM() {
+  calculateGrossWPM(elapsedTime: number) {
     const allTypedEntries = this.totalCorrectChars + this.errors;
-    const elapsedTime = this.calculateElapsedTime();
     this.grossWpm = this.calculateWPM(allTypedEntries, elapsedTime);
   }
 
-  calculateNetWPM() {
-    const elapsedTime = this.calculateElapsedTime();
+  calculateNetWPM(elapsedTime: number) {
     this.netWpm = this.calculateWPM(this.totalCorrectChars, elapsedTime);
   }
 
