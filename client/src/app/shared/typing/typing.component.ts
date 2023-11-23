@@ -105,8 +105,8 @@ export class TypingComponent implements OnDestroy {
   }
 
   calculateRealTimeWPM() {
-    const minutesElapsed = (Date.now() - this.startTime) / 60000;
-    this.realTimeWpm = Math.round((this.currentIndex + 1) / minutesElapsed);
+    const elapsedTime = this.calculateElapsedTime(true);
+    this.realTimeWpm = this.calculateWPM(this.totalCorrectChars, elapsedTime);
   }
 
   calculateTotalAccuracy() {
