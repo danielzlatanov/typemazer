@@ -6,10 +6,10 @@ import { Component, OnDestroy } from '@angular/core';
   styleUrls: ['./typing.component.css'],
 })
 export class TypingComponent implements OnDestroy {
-  // dummyText: string =
-  //   "This is some dummy text I've typed just now. Type it as fast as possible.";
   dummyText: string =
-    "The gods may throw a dice, their minds as cold as ice. And someone way down here loses someone dear. The winner takes it all, the loser has to fall. It's simple and it's plain, why should I complain?";
+    "This is some dummy text I've typed just now. Type it as fast as possible.";
+  // dummyText: string =
+  //   "The gods may throw a dice, their minds as cold as ice. And someone way down here loses someone dear. The winner takes it all, the loser has to fall. It's simple and it's plain, why should I complain?";
 
   words: string[] = this.dummyText.split(/\s+/);
 
@@ -93,6 +93,14 @@ export class TypingComponent implements OnDestroy {
     if (this.userInput == '') {
       event.preventDefault();
     }
+  }
+
+  handlePaste(event: ClipboardEvent): void {
+    event.preventDefault();
+  }
+
+  handleDrop(event: DragEvent): void {
+    event.preventDefault();
   }
 
   calculateGrossWPM(elapsedTime: number) {

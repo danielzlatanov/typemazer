@@ -1,5 +1,5 @@
 <div class="mx-4">
-  <span *ngFor="let word of words; let i = index">
+  <span *ngFor="let word of words; let i = index" class="select-none">
     <span
       [ngClass]="{
         'text-green-600 underline': i === currentIndex,
@@ -25,6 +25,9 @@
         userInput &&
         userInput !== words[currentIndex].slice(0, userInput.length)
     }"
+    (paste)="handlePaste($event)"
+    (drop)="handleDrop($event)"
+    autocomplete="off"
   />
 
   <div class="text-green-600 font-bold mt-2">
