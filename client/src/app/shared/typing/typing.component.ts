@@ -9,7 +9,7 @@ export class TypingComponent implements OnDestroy {
   // dummyText: string =
   //   "This is some dummy text I've typed just now. Type it as fast as possible.";
   dummyText: string =
-    'Therefore a man shall leave his father and mother and be joined to his wife, and they shall become one flesh.';
+    "The gods may throw a dice, their minds as cold as ice. And someone way down here loses someone dear. The winner takes it all, the loser has to fall. It's simple and it's plain, why should I complain?";
 
   words: string[] = this.dummyText.split(/\s+/);
 
@@ -39,7 +39,7 @@ export class TypingComponent implements OnDestroy {
   onInputChange() {
     if (!this.startTime) {
       this.startTime = Date.now();
-      console.log('race has started:');
+      console.log('race has started');
     }
 
     if (!this.realTimeWPMTimer) {
@@ -48,14 +48,15 @@ export class TypingComponent implements OnDestroy {
 
     const currentWord = this.words[this.currentIndex] + ' ';
     const lastWord = this.words[this.words.length - 1];
+    const isLastWord = this.currentIndex === this.words.length - 1;
 
     if (
       this.userInput === currentWord ||
-      (currentWord.trim() === lastWord && this.userInput === lastWord)
+      (isLastWord && this.userInput === lastWord)
     ) {
-      this.totalCorrectChars += 1;
-      if (currentWord.trim() === lastWord && this.userInput === lastWord) {
-        this.totalCorrectChars -= 1;
+      this.totalCorrectChars += currentWord.length;
+      if (isLastWord) {
+        this.totalCorrectChars--;
       }
 
       this.moveToNextWord();
@@ -63,19 +64,10 @@ export class TypingComponent implements OnDestroy {
     } else if (
       this.currentIndex <= this.words.length - 1 &&
       this.userInput &&
-      this.userInput ===
-        this.words[this.currentIndex].slice(0, this.userInput.length)
-    ) {
-      this.totalCorrectChars += 1;
-      console.log('correct:', this.totalCorrectChars);
-    } else if (
-      this.currentIndex <= this.words.length - 1 &&
-      this.userInput &&
       this.userInput !==
         this.words[this.currentIndex].slice(0, this.userInput.length)
     ) {
-      this.errors += 1;
-      console.log('errors:', this.errors);
+      this.errors++;
     }
   }
 
@@ -89,9 +81,7 @@ export class TypingComponent implements OnDestroy {
       this.calculateTotalAccuracy();
       this.stopRealTimeWPMTimer();
 
-      console.log('practice completed:');
-      console.log(`your WPM: ${this.totalWpm}`);
-      console.log(`your real-time WPM: ${this.realTimeWpm}`);
+      console.log('practice completed');
     }
   }
 
