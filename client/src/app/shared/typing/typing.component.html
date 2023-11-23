@@ -1,14 +1,15 @@
-<div class="typing-container">
+<div class="mx-4">
   <span *ngFor="let word of words; let i = index">
     <span
       [ngClass]="{
-        'correct-word': i === currentIndex,
-        'error-word':
+        'text-green-600 underline': i === currentIndex,
+        'text-red-600':
           i === currentIndex &&
           userInput &&
           userInput !== words[currentIndex].slice(0, userInput.length)
       }"
-      >{{ word }}</span
+    >
+      {{ word }}</span
     >
     {{ i < words.length - 1 ? " " : "" }}
   </span>
@@ -17,18 +18,21 @@
     [(ngModel)]="userInput"
     (input)="onInputChange()"
     (keydown.space)="onSpaceKey($event)"
+    class="border-2 border-green-500 mt-2"
     [ngClass]="{
-      'error-input':
+      'bg-rose-200 text-gray-600':
         currentIndex <= words.length - 1 &&
         userInput &&
         userInput !== words[currentIndex].slice(0, userInput.length)
     }"
   />
 
-  <p *ngIf="!endTime">{{ realTimeWpm || 0 }} wpm</p>
-  <p *ngIf="endTime">net: {{ netWpm }} wpm</p>
-  <p *ngIf="endTime">gross/raw: {{ grossWpm }} wpm</p>
-  <p *ngIf="endTime">accuracy: {{ totalAccuracy.toFixed(1) }} %</p>
-  <p *ngIf="endTime">time: {{ totalElapsedTime.toFixed(2) }}</p>
-  <p *ngIf="endTime">errors: {{ errors }}</p>
+  <div class="text-green-600 font-bold mt-2">
+    <p *ngIf="!endTime">{{ realTimeWpm || 0 }} wpm</p>
+    <p *ngIf="endTime">net: {{ netWpm }} wpm</p>
+    <p *ngIf="endTime">gross/raw: {{ grossWpm }} wpm</p>
+    <p *ngIf="endTime">accuracy: {{ totalAccuracy.toFixed(1) }} %</p>
+    <p *ngIf="endTime">time: {{ totalElapsedTime.toFixed(2) }}</p>
+    <p *ngIf="endTime">errors: {{ errors }}</p>
+  </div>
 </div>
