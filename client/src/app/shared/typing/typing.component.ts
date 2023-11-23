@@ -21,7 +21,7 @@ export class TypingComponent implements OnDestroy {
   totalAccuracy!: number;
   startTime!: number;
   endTime!: number;
-  totalWpm!: number;
+  grossWpm!: number;
   realTimeWpm!: number;
   private realTimeWPMTimer: any;
 
@@ -77,7 +77,7 @@ export class TypingComponent implements OnDestroy {
       this.userInput = '';
     } else {
       this.endTime = Date.now();
-      this.calculateTotalWPM();
+      this.calculateGrossWPM();
       this.calculateTotalAccuracy();
       this.stopRealTimeWPMTimer();
 
@@ -91,9 +91,11 @@ export class TypingComponent implements OnDestroy {
     }
   }
 
-  calculateTotalWPM() {
-    const minutesElapsed = (this.endTime - this.startTime) / 60000;
-    this.totalWpm = Math.round(this.words.length / minutesElapsed);
+  calculateGrossWPM() {
+    const allTypedEntries = this.totalCorrectChars + this.errors;
+    const elapsedTime = this.calculateElapsedTime();
+    this.grossWpm = this.calculateWPM(allTypedEntries, elapsedTime);
+  }
   }
 
   calculateRealTimeWPM() {
@@ -102,8 +104,17 @@ export class TypingComponent implements OnDestroy {
   }
 
   calculateTotalAccuracy() {
-    const totalEntries = this.totalCorrectChars + this.errors;
-    this.totalAccuracy = (this.totalCorrectChars / totalEntries) * 100;
+    const allTypedEntries = this.totalCorrectChars + this.errors;
+    this.totalAccuracy = (this.totalCorrectChars / allTypedEntries) * 100;
+  }
+
+  calculateWPM(totalChars: number, elapsedTime: number): number {
+    return Math.round(totalChars / 5 / elapsedTime);
+  }
+
+  calculateElapsedTime(useCurrentTime: boolean = false): number {
+    const currentTime = useCurrentTime ? Date.now() : this.endTime;
+    return (currentTime - this.startTime) / 60000;
   }
 
   ngOnDestroy() {

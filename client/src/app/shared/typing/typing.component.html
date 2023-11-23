@@ -16,16 +16,17 @@
     type="text"
     [(ngModel)]="userInput"
     (input)="onInputChange()"
+    (keydown.space)="onSpaceKey($event)"
     [ngClass]="{
       'error-input':
         currentIndex <= words.length - 1 &&
         userInput &&
         userInput !== words[currentIndex].slice(0, userInput.length)
     }"
-    (keydown.space)="onSpaceKey($event)"
   />
 
   <p *ngIf="!endTime">{{ realTimeWpm || 0 }} wpm</p>
-  <p *ngIf="endTime">total: {{ totalWpm }} wpm</p>
+  <p *ngIf="endTime">gross/raw: {{ grossWpm }} wpm</p>
   <p *ngIf="endTime">accuracy: {{ totalAccuracy.toFixed(1) }} %</p>
+  <p *ngIf="endTime">errors: {{ errors }}</p>
 </div>
