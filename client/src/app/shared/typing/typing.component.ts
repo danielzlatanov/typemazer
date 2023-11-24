@@ -4,6 +4,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 
 @Component({
@@ -34,6 +35,7 @@ export class TypingComponent implements OnInit, OnDestroy {
   private realTimeWPMTimer: any;
 
   @Input() countdownDuration: number = 0;
+  @ViewChild('textInput') textInput!: ElementRef;
 
   ngOnInit(): void {
     this.startCountdown();
@@ -54,8 +56,16 @@ export class TypingComponent implements OnInit, OnDestroy {
         if (!this.realTimeWPMTimer) {
           this.startRealTimeWPMTimer();
         }
+        this.enableInputField();
       }
     }, 1000);
+  }
+
+  enableInputField() {
+    if (this.textInput) {
+      this.textInput.nativeElement.removeAttribute('disabled');
+      this.textInput.nativeElement.focus();
+    }
   }
 
   startRealTimeWPMTimer() {

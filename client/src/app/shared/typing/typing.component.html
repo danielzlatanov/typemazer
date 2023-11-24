@@ -18,19 +18,23 @@
   </span>
   <input
     type="text"
+    autocomplete="off"
+    #textInput
     [(ngModel)]="userInput"
     (input)="onInputChange()"
     (keydown.space)="onSpaceKey($event)"
+    (paste)="handlePaste($event)"
+    (drop)="handleDrop($event)"
     class="border-2 border-green-500 mt-2"
     [ngClass]="{
       'bg-rose-200 text-gray-600':
         currentIndex <= words.length - 1 &&
         userInput &&
-        userInput !== words[currentIndex].slice(0, userInput.length)
+        userInput !== words[currentIndex].slice(0, userInput.length),
+      'pointer-events-none opacity-50': countdownDuration > 0
     }"
-    (paste)="handlePaste($event)"
-    (drop)="handleDrop($event)"
-    autocomplete="off"
+    [disabled]="countdownDuration > 0"
+    placeholder="{{ countdownDuration > 0 ? 'Type the text here...' : '' }}"
   />
 
   <div class="text-green-600 font-bold mt-2">
