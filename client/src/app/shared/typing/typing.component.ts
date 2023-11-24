@@ -131,6 +131,14 @@ export class TypingComponent implements OnDestroy {
     return (currentTime - this.startTime) / 60000;
   }
 
+  formatElapsedTime(elapsedTime: number): string {
+    const minutes = Math.floor(elapsedTime);
+    const seconds = Math.round((elapsedTime - minutes) * 60);
+    const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+
+    return `${minutes}:${formattedSeconds}`;
+  }
+
   ngOnDestroy() {
     this.stopRealTimeWPMTimer();
   }

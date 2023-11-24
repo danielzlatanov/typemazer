@@ -35,7 +35,7 @@
     <p *ngIf="endTime">net: {{ netWpm }} wpm</p>
     <p *ngIf="endTime">gross/raw: {{ grossWpm }} wpm</p>
     <p *ngIf="endTime">accuracy: {{ totalAccuracy.toFixed(1) }} %</p>
-    <p *ngIf="endTime">time: {{ totalElapsedTime.toFixed(2) }}</p>
+    <p *ngIf="endTime">time: {{ formatElapsedTime(totalElapsedTime) }}</p>
     <p *ngIf="endTime">errors: {{ errors }}</p>
   </div>
 </div>
