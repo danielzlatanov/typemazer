@@ -1,11 +1,17 @@
-import { Component, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 
 @Component({
   selector: 'app-typing',
   templateUrl: './typing.component.html',
   styleUrls: ['./typing.component.css'],
 })
-export class TypingComponent implements OnDestroy {
+export class TypingComponent implements OnInit, OnDestroy {
   dummyText: string =
     "This is some dummy text I've typed just now. Type it as fast as possible.";
   // dummyText: string =
@@ -27,6 +33,31 @@ export class TypingComponent implements OnDestroy {
   realTimeWpm!: number;
   private realTimeWPMTimer: any;
 
+  @Input() countdownDuration: number = 0;
+
+  ngOnInit(): void {
+    this.startCountdown();
+  }
+
+  startCountdown() {
+    const countdownInterval = setInterval(() => {
+      this.countdownDuration--;
+
+      if (this.countdownDuration <= 0) {
+        clearInterval(countdownInterval);
+        this.userInput = '';
+        if (!this.startTime) {
+          this.startTime = Date.now();
+          console.log('race has started');
+        }
+
+        if (!this.realTimeWPMTimer) {
+          this.startRealTimeWPMTimer();
+        }
+      }
+    }, 1000);
+  }
+
   startRealTimeWPMTimer() {
     this.realTimeWPMTimer = setInterval(() => {
       this.calculateRealTimeWPM();
@@ -39,15 +70,6 @@ export class TypingComponent implements OnDestroy {
   }
 
   onInputChange() {
-    if (!this.startTime) {
-      this.startTime = Date.now();
-      console.log('race has started');
-    }
-
-    if (!this.realTimeWPMTimer) {
-      this.startRealTimeWPMTimer();
-    }
-
     const currentWord = this.words[this.currentIndex] + ' ';
     const lastWord = this.words[this.words.length - 1];
     const isLastWord = this.currentIndex === this.words.length - 1;

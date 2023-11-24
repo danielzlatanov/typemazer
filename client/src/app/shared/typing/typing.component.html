@@ -1,4 +1,7 @@
 <div class="mx-4">
+  <p class="text-xl m-3 font-bold text-green-500" *ngIf="countdownDuration > 0">
+    Starting in {{ countdownDuration }}
+  </p>
   <span *ngFor="let word of words; let i = index" class="select-none">
     <span
       [ngClass]="{
