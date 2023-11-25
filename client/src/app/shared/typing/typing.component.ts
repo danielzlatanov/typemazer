@@ -110,6 +110,8 @@ export class TypingComponent implements OnInit, OnDestroy {
       this.currentIndex++;
       this.userInput = '';
     } else {
+      this.textInput.nativeElement.setAttribute('disabled', 'true');
+
       this.endTime = Date.now();
       this.totalElapsedTime = this.calculateElapsedTime();
       this.calculateGrossWPM(this.totalElapsedTime);
