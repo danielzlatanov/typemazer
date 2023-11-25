@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 
 @Component({
   selector: 'app-race-animation',
@@ -6,4 +6,5 @@ import { Component, ElementRef } from '@angular/core';
   styleUrls: ['./race-animation.component.css'],
 })
 export class RaceAnimationComponent {
+  @Input() wordProgress: number = 0;
 }

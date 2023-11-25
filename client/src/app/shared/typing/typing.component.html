@@ -1,4 +1,5 @@
 <div class="mx-4">
+  <app-race-animation [wordProgress]="getWordProgress()"></app-race-animation>
   <p class="text-xl m-3 font-bold text-green-500" *ngIf="countdownDuration > 0">
     Starting in {{ countdownDuration }}
   </p>
@@ -25,7 +26,7 @@
     (keydown.space)="onSpaceKey($event)"
     (paste)="handlePaste($event)"
     (drop)="handleDrop($event)"
-    class="border-2 border-green-500 mt-2"
+    class="border-2 pl-1 solid border-green-500 mt-2"
     [ngClass]="{
       'bg-rose-200 text-gray-600':
         currentIndex <= words.length - 1 &&
@@ -38,7 +39,6 @@
   />
 
   <div class="text-green-600 font-bold mt-2">
-    <p>progress: {{ getWordProgress() }} %</p>
     <p *ngIf="!endTime">{{ realTimeWpm || 0 }} wpm</p>
     <p *ngIf="endTime">net: {{ netWpm }} wpm</p>
     <p *ngIf="endTime">gross/raw: {{ grossWpm }} wpm</p>
