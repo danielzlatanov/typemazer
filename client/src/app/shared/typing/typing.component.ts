@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { RaceAnimationComponent } from '../race-animation/race-animation.component';
 
 @Component({
   selector: 'app-typing',
@@ -36,6 +37,8 @@ export class TypingComponent implements OnInit, OnDestroy {
 
   @Input() countdownDuration: number = 0;
   @ViewChild('textInput') textInput!: ElementRef;
+  @ViewChild(RaceAnimationComponent)
+  raceAnimationComponent!: RaceAnimationComponent;
 
   ngOnInit(): void {
     this.startCountdown();
@@ -109,7 +112,10 @@ export class TypingComponent implements OnInit, OnDestroy {
     if (this.currentIndex < this.words.length - 1) {
       this.currentIndex++;
       this.userInput = '';
+
+      this.raceAnimationComponent.updateCharacterAnimation();
     } else {
+      this.raceAnimationComponent.updateCharacterAnimation();
       this.textInput.nativeElement.setAttribute('disabled', 'true');
 
       this.endTime = Date.now();
@@ -180,7 +186,7 @@ export class TypingComponent implements OnInit, OnDestroy {
       this.currentIndex === this.words.length - 1 &&
       this.userInput === this.words[this.currentIndex];
 
-    return isLastWordCompleted ? 100 : Math.round(baseProgress); 
+    return isLastWordCompleted ? 100 : Math.round(baseProgress);
   }
 
   ngOnDestroy() {
