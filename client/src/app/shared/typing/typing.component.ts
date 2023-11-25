@@ -171,6 +171,16 @@ export class TypingComponent implements OnInit, OnDestroy {
     return `${minutes}:${formattedSeconds}`;
   }
 
+  getWordProgress(): number {
+    const baseProgress = (this.currentIndex / this.words.length) * 100;
+
+    const isLastWordCompleted =
+      this.currentIndex === this.words.length - 1 &&
+      this.userInput === this.words[this.currentIndex];
+
+    return isLastWordCompleted ? 100 : Math.round(baseProgress); 
+  }
+
   ngOnDestroy() {
     this.stopRealTimeWPMTimer();
   }

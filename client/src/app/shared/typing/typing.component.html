@@ -38,6 +38,7 @@
   />
 
   <div class="text-green-600 font-bold mt-2">
+    <p>progress: {{ getWordProgress() }} %</p>
     <p *ngIf="!endTime">{{ realTimeWpm || 0 }} wpm</p>
     <p *ngIf="endTime">net: {{ netWpm }} wpm</p>
     <p *ngIf="endTime">gross/raw: {{ grossWpm }} wpm</p>
