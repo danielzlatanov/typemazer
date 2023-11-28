@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PracticeComponent } from './practice/practice.component';
 import { CreateRoomComponent } from './create-room/create-room.component';
+import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'create-room',
     component: CreateRoomComponent,
+  },
+  {
+    path: 'waiting-room/:roomId',
+    component: WaitingRoomComponent,
   },
 ];
 
