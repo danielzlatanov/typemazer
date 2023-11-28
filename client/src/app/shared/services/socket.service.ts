@@ -18,4 +18,8 @@ export class SocketService {
       console.log('Disconnected from the server');
     });
   }
+
+  joinRoom(roomId: string) {
+    this.socket.emit('join-room', roomId);
+  }
 }
