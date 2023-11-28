@@ -27,7 +27,12 @@ app.post('/create-room', (req, res) => {
 });
 
 io.on('connection', socket => {
-	console.log('A user connected');
+	console.log('A user connected, socketId: ' + socket.id);
+
+	socket.on('join-room', roomId => {
+		socket.join(roomId);
+		console.log(`User joined room ${roomId}`);
+	});
 
 	socket.on('disconnect', () => {
 		console.log('A user disconnected');
