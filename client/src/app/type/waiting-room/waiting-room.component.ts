@@ -8,4 +8,16 @@ import { SocketService } from 'src/app/shared/services/socket.service';
   styleUrls: ['./waiting-room.component.css'],
 })
 export class WaitingRoomComponent {
+  roomId: string | null;
+
+  constructor(
+    private route: ActivatedRoute,
+    private socketService: SocketService
+  ) {
+    this.roomId = this.route.snapshot.paramMap.get('roomId');
+
+    if (this.roomId) {
+      this.socketService.joinRoom(this.roomId);
+    }
+  }
 }
