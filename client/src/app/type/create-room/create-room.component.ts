@@ -22,10 +22,12 @@ export class CreateRoomComponent {
       .subscribe((data: any) => {
         this.roomId = data.roomId;
         this.socketService.joinRoom(data.roomId);
+        this.router.navigate(['/type/waiting-room', data.roomId]);
       });
   }
 
   joinRoom(inputRoomId: string) {
     this.socketService.joinRoom(inputRoomId);
+    this.router.navigate(['/type/waiting-room', inputRoomId]);
   }
 }
