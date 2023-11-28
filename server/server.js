@@ -21,6 +21,11 @@ app.get('/', (req, res) => {
 	res.send('Server is running');
 });
 
+app.post('/create-room', (req, res) => {
+	const roomId = Math.floor(Math.random() * 10000).toString();
+	res.send({ roomId });
+});
+
 io.on('connection', socket => {
 	console.log('A user connected');
 
