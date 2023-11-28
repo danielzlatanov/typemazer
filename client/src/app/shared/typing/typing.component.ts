@@ -36,12 +36,15 @@ export class TypingComponent implements OnInit, OnDestroy {
   private realTimeWPMTimer: any;
 
   @Input() countdownDuration: number = 0;
+  @Input() waitingMode: boolean = false;
   @ViewChild('textInput') textInput!: ElementRef;
   @ViewChild(RaceAnimationComponent)
   raceAnimationComponent!: RaceAnimationComponent;
 
   ngOnInit(): void {
-    this.startCountdown();
+    if (!this.waitingMode) {
+      this.startCountdown();
+    }
   }
 
   startCountdown() {
