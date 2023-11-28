@@ -2,16 +2,20 @@
   <h1>Create a multiplayer room</h1>
 
   <button
+    (click)="createRoom()"
     class="p-1 text-sm bg-green-400 rounded text-white"
   >
     Create Room
   </button>
 
   <input
+    #inputRoomId
+    [(ngModel)]="roomId"
     placeholder="Enter room ID"
     class="border-2 border-green-500 pl-1"
   />
   <button
+    (click)="joinRoom(inputRoomId.value)"
     class="p-1 text-sm bg-blue-400 rounded text-white"
   >
     Join Room
