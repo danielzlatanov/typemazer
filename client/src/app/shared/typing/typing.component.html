@@ -18,6 +18,7 @@
     {{ i < words.length - 1 ? " " : "" }}
   </span>
   <input
+    *ngIf="!waitingMode"
     type="text"
     autocomplete="off"
     #textInput
@@ -32,10 +33,12 @@
         currentIndex <= words.length - 1 &&
         userInput &&
         userInput !== words[currentIndex].slice(0, userInput.length),
-      'pointer-events-none opacity-50': countdownDuration > 0
+      'pointer-events-none opacity-50': countdownDuration > 0 || waitingMode
     }"
-    [disabled]="countdownDuration > 0"
-    placeholder="{{ countdownDuration > 0 ? 'Type the text here...' : '' }}"
+    [disabled]="countdownDuration > 0 || waitingMode"
+    placeholder="{{
+      countdownDuration > 0 || waitingMode ? 'Type the text here...' : ''
+    }}"
   />
 
   <div class="text-green-600 font-bold mt-2">
