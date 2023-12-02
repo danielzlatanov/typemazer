@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { io } from 'socket.io-client';
 
 @Injectable({
@@ -23,5 +24,13 @@ export class SocketService {
 
   joinRoom(roomId: string) {
     this.socket.emit('join-room', roomId);
+  }
+
+  onUpdateUsers(): Observable<{ id: string }[]> {
+    return new Observable((observer) => {
+      this.socket.on('update-users', (users: { id: string }[]) => {
+        observer.next(users);
+      });
+    });
   }
 }
