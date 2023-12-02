@@ -7,7 +7,9 @@ import { io } from 'socket.io-client';
 export class SocketService {
   private socket: any;
 
-  constructor() {
+  constructor() {}
+
+  connect() {
     this.socket = io('http://localhost:8000');
 
     this.socket.on('connect', () => {
