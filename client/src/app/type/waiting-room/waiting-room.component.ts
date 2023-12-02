@@ -9,6 +9,7 @@ import { SocketService } from 'src/app/shared/services/socket.service';
 })
 export class WaitingRoomComponent {
   roomId: string | null;
+  roomUsers: { id: string }[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -17,7 +18,16 @@ export class WaitingRoomComponent {
     this.roomId = this.route.snapshot.paramMap.get('roomId');
 
     if (this.roomId) {
+      this.socketService.connect();
       this.socketService.joinRoom(this.roomId);
+      this.subscribeToUpdatedUsers();
     }
+  }
+
+  private subscribeToUpdatedUsers() {
+    this.socketService.onUpdateUsers().subscribe((updatedUsers) => {
+      console.log('updated users: ', updatedUsers);
+      this.roomUsers = updatedUsers;
+    });
   }
 }
