@@ -50,13 +50,22 @@ io.on('connection', socket => {
 	});
 
 	socket.on('disconnect', () => {
-		console.log('A user disconnected');
+		removeUserFromRooms(socket.id);
+		console.log(`User disconnected, user ID: ${socket.id}`);
 	});
 });
 
 function getRoomUsers(roomId) {
 	return roomUsers[roomId] || [];
 }
+
+function removeUserFromRooms(userId) {
+	for (const roomId in roomUsers) {
+		roomUsers[roomId] = roomUsers[roomId].filter(user => user.id !== userId);
+		io.to(roomId).emit('update-users', roomUsers[roomId]);
+	}
+}
+
 server.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
 });
