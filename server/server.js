@@ -26,12 +26,27 @@ app.post('/create-room', (req, res) => {
 	res.send({ roomId });
 });
 
+const roomUsers = {};
+
 io.on('connection', socket => {
-	console.log('A user connected, socketId: ' + socket.id);
+	console.log('A user connected, user ID: ' + socket.id);
 
 	socket.on('join-room', roomId => {
+		if (!roomUsers[roomId]) {
+			roomUsers[roomId] = [];
+		}
+
+		const userData = {
+			id: socket.id,
+		};
+
+		roomUsers[roomId].push(userData);
+
 		socket.join(roomId);
-		console.log(`User joined room ${roomId}`);
+		io.to(roomId).emit('update-users', getRoomUsers(roomId));
+
+		console.log(`User joined room ${roomId}, user ID: ${socket.id}`);
+		console.log('Users in all rooms', roomUsers);
 	});
 
 	socket.on('disconnect', () => {
@@ -39,6 +54,9 @@ io.on('connection', socket => {
 	});
 });
 
+function getRoomUsers(roomId) {
+	return roomUsers[roomId] || [];
+}
 server.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
 });
