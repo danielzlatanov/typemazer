@@ -1,5 +1,8 @@
 <div class="mx-4">
-  <app-race-animation [wordProgress]="getWordProgress()"></app-race-animation>
+  <app-race-animation
+    [wordProgress]="getWordProgress()"
+    [roomUsers]="roomUsers"
+  ></app-race-animation>
   <p class="text-xl m-3 font-bold text-green-500" *ngIf="countdownDuration > 0">
     Starting in {{ countdownDuration }}
   </p>

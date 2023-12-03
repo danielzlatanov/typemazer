@@ -37,6 +37,7 @@ export class TypingComponent implements OnInit, OnDestroy {
 
   @Input() countdownDuration: number = 0;
   @Input() waitingMode: boolean = false;
+  @Input() roomUsers: { id: string }[] = [];
   @ViewChild('textInput') textInput!: ElementRef;
   @ViewChild(RaceAnimationComponent)
   raceAnimationComponent!: RaceAnimationComponent;

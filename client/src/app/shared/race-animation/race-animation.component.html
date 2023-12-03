@@ -1,9 +1,26 @@
-<div class="my-2 relative w-10/12 h-7">
+<ng-container *ngIf="roomUsers && roomUsers.length > 0; else practiceMode">
   <div
-    #myAnimation
-    class="absolute w-fit h-6 bg-yellow-400 rounded-lg transition-left duration-300 ease-linear text-xs font-thin flex items-center justify-center px-1"
+    class="my-2 relative w-10/12 h-7 flex flex-col"
+    *ngFor="let user of roomUsers"
   >
-    <span class="text-xs">{{ wordProgress }}</span
-    ><span class="text-xxs ml-0.5">%</span>
+    <div
+      #myCharacter
+      class="absolute w-fit h-6 bg-yellow-400 rounded-lg transition-left duration-300 ease-linear text-xs font-thin flex items-center justify-center px-1"
+    >
+      <span class="text-xs">{{ wordProgress }}</span
+      ><span class="text-xxs ml-0.5">%</span>
+    </div>
   </div>
-</div>
+</ng-container>
+
+<ng-template #practiceMode>
+  <div class="my-2 relative w-10/12 h-7 flex flex-col">
+    <div
+      #myCharacter
+      class="absolute w-fit h-6 bg-yellow-400 rounded-lg transition-left duration-300 ease-linear text-xs font-thin flex items-center justify-center px-1"
+    >
+      <span class="text-xs">{{ wordProgress }}</span
+      ><span class="text-xxs ml-0.5">%</span>
+    </div>
+  </div>
+</ng-template>

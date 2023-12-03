@@ -7,10 +7,12 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 })
 export class RaceAnimationComponent {
   @Input() wordProgress: number = 0;
-  @ViewChild('myAnimation', { static: true }) characterElementRef!: ElementRef;
+  @Input() roomUsers: { id: string }[] = [];
+
+  @ViewChild('myCharacter') myCharacterRef!: ElementRef;
 
   updateCharacterAnimation() {
-    const characterElement = this.characterElementRef.nativeElement;
+    const characterElement = this.myCharacterRef.nativeElement;
     characterElement.style.left = Math.round(this.wordProgress) + '%';
   }
 }
