@@ -10,6 +10,7 @@ import { SocketService } from 'src/app/shared/services/socket.service';
 })
 export class WaitingRoomComponent {
   roomId: string | null;
+  username!: string;
   roomUsers: IRoomUser[] = [];
 
   constructor(
@@ -19,16 +20,22 @@ export class WaitingRoomComponent {
     this.roomId = this.route.snapshot.paramMap.get('roomId');
 
     if (this.roomId) {
+    const navigationState = this.router.getCurrentNavigation()?.extras.state;
+    if (navigationState) {
+      this.username = navigationState['username'];
+    }
+
       this.socketService.connect();
-      this.socketService.joinRoom(this.roomId);
+
+      this.socketService.joinRoom(this.roomId, this.username);
       this.subscribeToUpdatedUsers();
     }
   }
 
   private subscribeToUpdatedUsers() {
     this.socketService.onUpdateUsers().subscribe((updatedUsers) => {
-      console.log('updated users: ', updatedUsers);
       this.roomUsers = updatedUsers;
+      console.log('updated users: ', updatedUsers);
     });
   }
 }

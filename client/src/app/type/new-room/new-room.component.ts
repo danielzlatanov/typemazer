@@ -17,4 +17,23 @@ export class NewRoomComponent {
     private http: HttpClient,
     private socketService: SocketService
   ) {}
+
+  createRoom() {
+    this.http
+      .post('http://localhost:8000/create-room', {})
+      .subscribe((data: any) => {
+        this.roomId = data.roomId;
+          this.handleRoomNavigation(this.roomId, this.username);
+      });
+  }
+
+  joinRoom(inputRoomId: string) {
+      this.handleRoomNavigation(inputRoomId, this.username);
+  }
+
+  private handleRoomNavigation(roomId: string, username: string) {
+    this.socketService.connect();
+    const navigationExtras = { state: { username } };
+    this.router.navigate(['/type/waiting-room', roomId], navigationExtras);
+  }
 }
