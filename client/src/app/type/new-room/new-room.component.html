@@ -1,0 +1,31 @@
+<div class="text-blue-600 ml-4 flex flex-col w-52 space-y-4">
+  <h1>Play with your friends</h1>
+
+  <input
+    [(ngModel)]="username"
+    placeholder="Enter your username"
+    class="border-2 border-green-500 pl-1"
+  />
+
+  <input
+    #inputRoomId
+    placeholder="Enter room ID"
+    class="border-2 border-green-500 pl-1"
+  />
+
+  <div class="space-x-2">
+    <button
+      (click)="createRoom()"
+      class="p-1 text-sm bg-green-400 rounded text-white"
+    >
+      create room
+    </button>
+
+    <button
+      (click)="joinRoom(inputRoomId.value)"
+      class="p-1 text-sm bg-blue-400 rounded text-white"
+    >
+      join room
+    </button>
+  </div>
+</div>

@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { TypeRoutingModule } from './type-routing.module';
 import { PracticeComponent } from './practice/practice.component';
 import { SharedModule } from '../shared/shared.module';
-import { CreateRoomComponent } from './create-room/create-room.component';
+import { NewRoomComponent } from './new-room/new-room.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [PracticeComponent, CreateRoomComponent, WaitingRoomComponent],
+  declarations: [PracticeComponent, NewRoomComponent, WaitingRoomComponent],
   imports: [
     CommonModule,
     TypeRoutingModule,
