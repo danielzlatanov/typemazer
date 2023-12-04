@@ -23,12 +23,20 @@ export class NewRoomComponent {
       .post('http://localhost:8000/create-room', {})
       .subscribe((data: any) => {
         this.roomId = data.roomId;
+        if (this.username) {
           this.handleRoomNavigation(this.roomId, this.username);
+        } else {
+          this.router.navigate(['/type/new-room']);
+        }
       });
   }
 
   joinRoom(inputRoomId: string) {
+    if (inputRoomId && this.username) {
       this.handleRoomNavigation(inputRoomId, this.username);
+    } else {
+      this.router.navigate(['/type/new-room']);
+    }
   }
 
   private handleRoomNavigation(roomId: string, username: string) {
