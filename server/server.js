@@ -31,13 +31,16 @@ const roomUsers = {};
 io.on('connection', socket => {
 	console.log('A user connected, user ID: ' + socket.id);
 
-	socket.on('join-room', roomId => {
+	socket.on('join-room', data => {
+		const { roomId, username } = data;
+
 		if (!roomUsers[roomId]) {
 			roomUsers[roomId] = [];
 		}
 
 		const userData = {
 			id: socket.id,
+			username: username,
 		};
 
 		roomUsers[roomId].push(userData);

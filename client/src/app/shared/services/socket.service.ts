@@ -23,8 +23,8 @@ export class SocketService {
     });
   }
 
-  joinRoom(roomId: string) {
-    this.socket.emit('join-room', roomId);
+  joinRoom(roomId: string, username: string) {
+    this.socket.emit('join-room', { roomId, username });
   }
 
   onUpdateUsers(): Observable<IRoomUser[]> {
