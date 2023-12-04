@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { IRoomUser } from 'src/app/shared/interfaces/user';
 import { SocketService } from 'src/app/shared/services/socket.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { SocketService } from 'src/app/shared/services/socket.service';
 })
 export class WaitingRoomComponent {
   roomId: string | null;
-  roomUsers: { id: string }[] = [];
+  roomUsers: IRoomUser[] = [];
 
   constructor(
     private route: ActivatedRoute,

@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { RaceAnimationComponent } from '../race-animation/race-animation.component';
+import { IRoomUser } from '../interfaces/user';
 
 @Component({
   selector: 'app-typing',
@@ -37,7 +38,7 @@ export class TypingComponent implements OnInit, OnDestroy {
 
   @Input() countdownDuration: number = 0;
   @Input() waitingMode: boolean = false;
-  @Input() roomUsers: { id: string }[] = [];
+  @Input() roomUsers: IRoomUser[] = [];
   @ViewChild('textInput') textInput!: ElementRef;
   @ViewChild(RaceAnimationComponent)
   raceAnimationComponent!: RaceAnimationComponent;

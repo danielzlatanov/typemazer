@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { IRoomUser } from '../interfaces/user';
 
 @Component({
   selector: 'app-race-animation',
@@ -7,7 +8,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 })
 export class RaceAnimationComponent {
   @Input() wordProgress: number = 0;
-  @Input() roomUsers: { id: string }[] = [];
+  @Input() roomUsers: IRoomUser[] = [];
 
   @ViewChild('myCharacter') myCharacterRef!: ElementRef;
 
