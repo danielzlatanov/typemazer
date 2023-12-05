@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, fromEvent, takeUntil } from 'rxjs';
 import { IRoomUser } from 'src/app/shared/interfaces/user';
 import { SocketService } from 'src/app/shared/services/socket.service';
 
@@ -8,10 +9,22 @@ import { SocketService } from 'src/app/shared/services/socket.service';
   templateUrl: './waiting-room.component.html',
   styleUrls: ['./waiting-room.component.css'],
 })
-export class WaitingRoomComponent {
+export class WaitingRoomComponent implements OnInit, OnDestroy {
   roomId: string | null;
   username!: string;
   roomUsers: IRoomUser[] = [];
+
+  private unsubscriber: Subject<void> = new Subject<void>();
+
+  ngOnInit(): void {
+    history.pushState(null, '');
+
+    fromEvent(window, 'popstate')
+      .pipe(takeUntil(this.unsubscriber))
+      .subscribe(() => {
+        history.pushState(null, '');
+      });
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -40,5 +53,10 @@ export class WaitingRoomComponent {
       this.roomUsers = updatedUsers;
       console.log('updated users: ', updatedUsers);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscriber.next();
+    this.unsubscriber.complete();
   }
 }

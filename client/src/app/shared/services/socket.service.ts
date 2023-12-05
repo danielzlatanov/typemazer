@@ -15,7 +15,9 @@ export class SocketService {
     this.socket = io('http://localhost:8000');
 
     this.socket.on('connect', () => {
-      console.log('Connected to the server with ID: ', this.socket.id);
+      if (this.socket.id) {
+        console.log('Connected to the server with ID: ', this.socket.id);
+      }
     });
 
     this.socket.on('disconnect', () => {
