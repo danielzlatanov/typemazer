@@ -58,6 +58,17 @@ io.on('connection', socket => {
 	});
 });
 
+setInterval(cleanUpEmptyRooms, 1800000);
+
+function cleanUpEmptyRooms() {
+	for (const roomId in roomUsers) {
+		if (roomUsers[roomId].length === 0) {
+			delete roomUsers[roomId];
+			console.log(`Room '${roomId}' removed due to inactivity.`);
+			console.log('Users in all rooms ', roomUsers);
+		}
+	}
+}
 function getRoomUsers(roomId) {
 	return roomUsers[roomId] || [];
 }
