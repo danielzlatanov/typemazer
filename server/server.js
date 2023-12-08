@@ -27,6 +27,7 @@ app.post('/create-room', (req, res) => {
 });
 
 const roomUsers = {};
+const roomState = {};
 
 io.on('connection', socket => {
 	console.log('A user connected, user ID: ' + socket.id);
@@ -36,6 +37,7 @@ io.on('connection', socket => {
 
 		if (!roomUsers[roomId]) {
 			roomUsers[roomId] = [];
+			roomState[roomId] = { countdownTimerActive: false };
 		}
 
 		const userData = {
@@ -48,8 +50,14 @@ io.on('connection', socket => {
 		socket.join(roomId);
 		io.to(roomId).emit('update-users', getRoomUsers(roomId));
 
+		if (roomUsers[roomId].length === 2 && !roomState[roomId].countdownTimerActive) {
+			startCountdownTimer(roomId);
+			roomState[roomId].countdownTimerActive = true;
+		}
+
 		console.log(`User joined room ${roomId}, user ID: ${socket.id}`);
 		console.log('Users in all rooms', roomUsers);
+		console.log('Room state in all rooms', roomState);
 	});
 
 	socket.on('disconnect', () => {
@@ -69,6 +77,23 @@ function cleanUpEmptyRooms() {
 		}
 	}
 }
+
+function startCountdownTimer(roomId) {
+	io.to(roomId).emit('countdown-timer-started');
+
+	let countdown = 10;
+	const intervalId = setInterval(() => {
+		io.to(roomId).emit('countdown-update', countdown);
+		countdown--;
+
+		if (countdown < 0) {
+			clearInterval(intervalId);
+			io.to(roomId).emit('countdown-timer-finished');
+			roomState[roomId].countdownTimerActive = false;
+		}
+	}, 1000);
+}
+
 function getRoomUsers(roomId) {
 	return roomUsers[roomId] || [];
 }
