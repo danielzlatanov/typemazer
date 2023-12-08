@@ -36,4 +36,28 @@ export class SocketService {
       });
     });
   }
+
+  onCountdownTimerStarted(): Observable<void> {
+    return new Observable((observer) => {
+      this.socket.on('countdown-timer-started', () => {
+        observer.next();
+      });
+    });
+  }
+
+  onCountdownUpdate(): Observable<number> {
+    return new Observable((observer) => {
+      this.socket.on('countdown-update', (countdown: number) => {
+        observer.next(countdown);
+      });
+    });
+  }
+
+  onCountdownTimerFinished(): Observable<void> {
+    return new Observable((observer) => {
+      this.socket.on('countdown-timer-finished', () => {
+        observer.next();
+      });
+    });
+  }
 }
