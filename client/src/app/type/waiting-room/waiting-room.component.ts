@@ -13,18 +13,10 @@ export class WaitingRoomComponent implements OnInit, OnDestroy {
   roomId: string | null;
   username!: string;
   roomUsers: IRoomUser[] = [];
+  countdown!: number;
+  waitingMode: boolean = true;
 
   private unsubscriber: Subject<void> = new Subject<void>();
-
-  ngOnInit(): void {
-    history.pushState(null, '');
-
-    fromEvent(window, 'popstate')
-      .pipe(takeUntil(this.unsubscriber))
-      .subscribe(() => {
-        history.pushState(null, '');
-      });
-  }
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +38,29 @@ export class WaitingRoomComponent implements OnInit, OnDestroy {
     } else {
       this.router.navigate(['/type/new-room']);
     }
+  }
+
+  ngOnInit(): void {
+    history.pushState(null, '');
+
+    fromEvent(window, 'popstate')
+      .pipe(takeUntil(this.unsubscriber))
+      .subscribe(() => {
+        history.pushState(null, '');
+      });
+
+    this.socketService.onCountdownTimerStarted().subscribe(() => {
+      console.log('Countdown timer started');
+    });
+
+    this.socketService.onCountdownUpdate().subscribe((countdown: number) => {
+      this.countdown = countdown;
+    });
+
+    this.socketService.onCountdownTimerFinished().subscribe(() => {
+      console.log('Countdown timer finished');
+      this.waitingMode = false;
+    });
   }
 
   private subscribeToUpdatedUsers() {
