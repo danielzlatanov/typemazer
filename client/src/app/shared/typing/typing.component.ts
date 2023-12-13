@@ -36,7 +36,8 @@ export class TypingComponent implements OnInit, OnDestroy {
   realTimeWpm!: number;
   private realTimeWPMTimer: any;
 
-  @Input() countdownDuration: number = 0;
+  @Input() countdown!: number;
+  @Input() practiceCountdown!: number;
   @Input() waitingMode: boolean = false;
   @Input() roomUsers: IRoomUser[] = [];
   @ViewChild('textInput') textInput!: ElementRef;
@@ -44,23 +45,40 @@ export class TypingComponent implements OnInit, OnDestroy {
   raceAnimationComponent!: RaceAnimationComponent;
 
   ngOnInit(): void {
-    if (!this.waitingMode) {
-      this.startCountdown();
+    if (this.practiceCountdown) {
+      this.startPracticeCountdown();
+      this.countdown = this.practiceCountdown;
     }
+
+    setInterval(() => {
+      if (!this.waitingMode) {
+        this.startRace();
+      }
+    }, this.countdown);
   }
 
-  startCountdown() {
-    const countdownInterval = setInterval(() => {
-      this.countdownDuration--;
+  startRace() {
+    if (!this.startTime) {
+      this.startTime = Date.now();
+      console.log('race has started');
+    }
 
-      if (this.countdownDuration <= 0) {
-        clearInterval(countdownInterval);
+    if (!this.realTimeWPMTimer) {
+      this.startRealTimeWPMTimer();
+    }
+    this.enableInputField();
+  }
+
+  startPracticeCountdown() {
+    const practiceCountdownInterval = setInterval(() => {
+      this.countdown--;
+      if (this.countdown <= 0) {
+        clearInterval(practiceCountdownInterval);
         this.userInput = '';
         if (!this.startTime) {
           this.startTime = Date.now();
-          console.log('race has started');
+          console.log('practice has started');
         }
-
         if (!this.realTimeWPMTimer) {
           this.startRealTimeWPMTimer();
         }
