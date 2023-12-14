@@ -55,6 +55,17 @@ io.on('connection', socket => {
 			roomState[roomId].countdownTimerActive = true;
 		}
 
+		socket.on('user-stats-update', data => {
+			const { roomId, userStats } = data;
+
+			roomState[roomId][socket.id] = userStats;
+			console.log('room state after user-stats-update', roomState);
+
+			io.to(roomId).emit('update-user-stats', roomState[roomId]);
+
+			console.log(`User stats updated for user ${socket.id} in room ${roomId}`);
+		});
+
 		console.log(`User joined room ${roomId}, user ID: ${socket.id}`);
 		console.log('Users in all rooms', roomUsers);
 		console.log('Room state in all rooms', roomState);
