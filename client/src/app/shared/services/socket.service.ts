@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io } from 'socket.io-client';
 import { IRoomUser } from '../interfaces/user';
+import { UserStats } from '../models/userStats';
+import { IRoomUserStats } from '../interfaces/roomUserStats';
 
 @Injectable({
   providedIn: 'root',
@@ -57,6 +59,18 @@ export class SocketService {
     return new Observable((observer) => {
       this.socket.on('countdown-timer-finished', () => {
         observer.next();
+      });
+    });
+  }
+
+  sendUserStatsUpdate(roomId: string, userStats: UserStats) {
+    this.socket.emit('user-stats-update', { roomId, userStats });
+  }
+
+  onUserStatsUpdate(): Observable<IRoomUserStats> {
+    return new Observable((observer) => {
+      this.socket.on('update-user-stats', (updatedUserStats: IRoomUserStats) => {
+        observer.next(updatedUserStats);
       });
     });
   }
