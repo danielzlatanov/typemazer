@@ -42,6 +42,6 @@ export class NewRoomComponent {
   private handleRoomNavigation(roomId: string, username: string) {
     this.socketService.connect();
     const navigationExtras = { state: { username } };
-    this.router.navigate(['/type/waiting-room', roomId], navigationExtras);
+    this.router.navigate(['/type/live', roomId], navigationExtras);
   }
 }

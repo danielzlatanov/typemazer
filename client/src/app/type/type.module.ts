@@ -6,11 +6,11 @@ import { SharedModule } from '../shared/shared.module';
 import { NewRoomComponent } from './new-room/new-room.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
+import { LiveRoomComponent } from './live-room/live-room.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [PracticeComponent, NewRoomComponent, WaitingRoomComponent],
+  declarations: [PracticeComponent, NewRoomComponent, LiveRoomComponent],
   imports: [
     CommonModule,
     TypeRoutingModule,

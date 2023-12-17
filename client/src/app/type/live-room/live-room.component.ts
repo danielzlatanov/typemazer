@@ -5,11 +5,11 @@ import { IRoomUser } from 'src/app/shared/interfaces/user';
 import { SocketService } from 'src/app/shared/services/socket.service';
 
 @Component({
-  selector: 'app-waiting-room',
-  templateUrl: './waiting-room.component.html',
-  styleUrls: ['./waiting-room.component.css'],
+  selector: 'app-live-room',
+  templateUrl: './live-room.component.html',
+  styleUrls: ['./live-room.component.css'],
 })
-export class WaitingRoomComponent implements OnInit, OnDestroy {
+export class LiveRoomComponent implements OnInit, OnDestroy {
   roomId: string | null;
   username!: string;
   roomUsers: IRoomUser[] = [];
@@ -21,7 +21,7 @@ export class WaitingRoomComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private socketService: SocketService
+    private socketService: SocketService,
   ) {
     this.roomId = this.route.snapshot.paramMap.get('roomId');
 
@@ -32,7 +32,6 @@ export class WaitingRoomComponent implements OnInit, OnDestroy {
 
     if (this.roomId && this.username) {
       this.socketService.connect();
-
       this.socketService.joinRoom(this.roomId, this.username);
       this.subscribeToUpdatedUsers();
     } else {
@@ -61,7 +60,6 @@ export class WaitingRoomComponent implements OnInit, OnDestroy {
       console.log('Countdown timer finished');
       this.waitingMode = false;
     });
-  }
 
   private subscribeToUpdatedUsers() {
     this.socketService.onUpdateUsers().subscribe((updatedUsers) => {
