@@ -3,3 +3,25 @@
   [roomUsers]="roomUsers"
   [countdown]="countdown"
 ></app-typing>
+<div *ngIf="roomUsers.length > 0" class="m-4">
+  <ul>
+    <li *ngFor="let user of roomUsers" class="m-2">
+      <div class="flex items-center justify-between relative w-10/12 h-6">
+        <app-race-animation
+          [roomUser]="user"
+          [userProgress]="getUserStatsValue(user.id, 'realTimeWordProgress')"
+        ></app-race-animation>
+        <span
+          class="text-green-500 absolute -right-24"
+          *ngIf="getUserStatsValue(user.id, 'realTimeWordProgress') != 100"
+          >{{ getUserStatsValue(user.id, "realTimeWpm") }} wpm</span
+        >
+        <span
+          class="font-bold absolute -right-24"
+          *ngIf="getUserStatsValue(user.id, 'realTimeWordProgress') == 100"
+          >{{ getUserStatsValue(user.id, "netWpm") }} wpm</span
+        >
+      </div>
+    </li>
+  </ul>
+</div>

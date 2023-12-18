@@ -73,6 +73,12 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       });
   }
 
+  getUserStatsValue(userId: string, property: string): number {
+    return this.roomUserStats && this.roomUserStats[userId]
+      ? this.roomUserStats[userId][property]
+      : 0;
+  }
+
   private subscribeToUpdatedUsers() {
     this.socketService.onUpdateUsers().subscribe((updatedUsers) => {
       this.roomUsers = updatedUsers;
