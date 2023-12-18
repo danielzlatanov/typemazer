@@ -7,6 +7,6 @@ import { RaceAnimationComponent } from './race-animation/race-animation.componen
 @NgModule({
   declarations: [TypingComponent, RaceAnimationComponent],
   imports: [CommonModule, FormsModule],
-  exports: [TypingComponent],
+  exports: [TypingComponent, RaceAnimationComponent],
 })
 export class SharedModule {}

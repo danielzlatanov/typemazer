@@ -1,26 +1,12 @@
-<ng-container *ngIf="roomUsers && roomUsers.length > 0; else practiceMode">
+<ng-container *ngIf="roomUser && roomUser.username">
   <div
-    class="my-2 relative w-10/12 h-7 flex flex-col"
-    *ngFor="let user of roomUsers"
+    #myCharacter
+    [ngClass]="{
+      'w-fit': roomUser.username.length >= 3,
+      'w-6': roomUser.username.length < 3
+    }"
+    class="absolute h-6 top-0 left-0 bg-yellow-400 rounded-lg transition-left duration-300 ease-linear text-xs font-thin flex items-center justify-center px-1"
   >
-    <div
-      #myCharacter
-      class="absolute w-fit h-6 bg-yellow-400 rounded-lg transition-left duration-300 ease-linear text-xs font-thin flex items-center justify-center px-1"
-    >
-      <span class="text-xs">{{ wordProgress }}</span
-      ><span class="text-xxs ml-0.5">%</span>
-    </div>
+    <span class="text-xs">{{ roomUser.username }}</span>
   </div>
 </ng-container>
-
-<ng-template #practiceMode>
-  <div class="my-2 relative w-10/12 h-7 flex flex-col">
-    <div
-      #myCharacter
-      class="absolute w-fit h-6 bg-yellow-400 rounded-lg transition-left duration-300 ease-linear text-xs font-thin flex items-center justify-center px-1"
-    >
-      <span class="text-xs">{{ wordProgress }}</span
-      ><span class="text-xxs ml-0.5">%</span>
-    </div>
-  </div>
-</ng-template>
