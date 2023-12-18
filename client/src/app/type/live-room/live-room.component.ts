@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, fromEvent, takeUntil } from 'rxjs';
+import { IRoomUserStats } from 'src/app/shared/interfaces/roomUserStats';
 import { IRoomUser } from 'src/app/shared/interfaces/user';
 import { SocketService } from 'src/app/shared/services/socket.service';
 
@@ -15,6 +16,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   roomUsers: IRoomUser[] = [];
   countdown!: number;
   waitingMode: boolean = true;
+  roomUserStats!: IRoomUserStats;
 
   private unsubscriber: Subject<void> = new Subject<void>();
 
@@ -60,6 +62,16 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       console.log('Countdown timer finished');
       this.waitingMode = false;
     });
+
+    this.socketService
+      .onUserStatsUpdate()
+      .subscribe((updatedUserStats: IRoomUserStats) => {
+        const { countdownTimerActive, ...userStatsWithoutTimer } =
+          updatedUserStats;
+        this.roomUserStats = userStatsWithoutTimer;
+        // console.log('room user stats updated', this.roomUserStats);
+      });
+  }
 
   private subscribeToUpdatedUsers() {
     this.socketService.onUpdateUsers().subscribe((updatedUsers) => {
