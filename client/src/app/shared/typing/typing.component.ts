@@ -6,8 +6,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { RaceAnimationComponent } from '../race-animation/race-animation.component';
 import { IRoomUser } from '../interfaces/user';
+import { UserStats } from '../models/userStats';
+import { SocketService } from '../services/socket.service';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-typing',
@@ -17,8 +19,6 @@ import { IRoomUser } from '../interfaces/user';
 export class TypingComponent implements OnInit, OnDestroy {
   dummyText: string =
     "This is some dummy text I've typed just now. Type it as fast as possible.";
-  // dummyText: string =
-  //   "The gods may throw a dice, their minds as cold as ice. And someone way down here loses someone dear. The winner takes it all, the loser has to fall. It's simple and it's plain, why should I complain?";
 
   words: string[] = this.dummyText.split(/\s+/);
 
@@ -36,13 +36,16 @@ export class TypingComponent implements OnInit, OnDestroy {
   realTimeWpm!: number;
   private realTimeWPMTimer: any;
 
+  constructor(private socketService: SocketService) {}
+
   @Input() countdown!: number;
   @Input() practiceCountdown!: number;
   @Input() waitingMode: boolean = false;
   @Input() roomUsers: IRoomUser[] = [];
+  @Input() roomId: string | null = null;
   @ViewChild('textInput') textInput!: ElementRef;
-  @ViewChild(RaceAnimationComponent)
-  raceAnimationComponent!: RaceAnimationComponent;
+
+  userStats: UserStats = new UserStats();
 
   ngOnInit(): void {
     if (this.practiceCountdown) {
@@ -55,6 +58,11 @@ export class TypingComponent implements OnInit, OnDestroy {
         this.startRace();
       }
     }, this.countdown);
+
+    this.sendUserStatsUpdate();
+    interval(2000).subscribe(() => {
+      this.sendUserStatsUpdate();
+    });
   }
 
   startRace() {
@@ -120,6 +128,7 @@ export class TypingComponent implements OnInit, OnDestroy {
       }
 
       this.moveToNextWord();
+      this.userStats.realTimeWordProgress = this.getWordProgress();
       this.calculateRealTimeWPM();
     } else if (
       this.currentIndex <= this.words.length - 1 &&
@@ -135,10 +144,7 @@ export class TypingComponent implements OnInit, OnDestroy {
     if (this.currentIndex < this.words.length - 1) {
       this.currentIndex++;
       this.userInput = '';
-
-      this.raceAnimationComponent.updateCharacterAnimation();
     } else {
-      this.raceAnimationComponent.updateCharacterAnimation();
       this.textInput.nativeElement.setAttribute('disabled', 'true');
 
       this.endTime = Date.now();
@@ -147,8 +153,14 @@ export class TypingComponent implements OnInit, OnDestroy {
       this.calculateNetWPM(this.totalElapsedTime);
       this.calculateTotalAccuracy();
       this.stopRealTimeWPMTimer();
+    }
+  }
 
-      console.log('practice completed');
+  sendUserStatsUpdate() {
+    if (this.roomId) {
+      this.socketService.sendUserStatsUpdate(this.roomId, this.userStats);
+    } else {
+      console.log('sendUserStatsUpdate did not receive `roomId`');
     }
   }
 
@@ -172,12 +184,20 @@ export class TypingComponent implements OnInit, OnDestroy {
   }
 
   calculateNetWPM(elapsedTime: number) {
+    this.userStats.netWpm = this.calculateWPM(
+      this.totalCorrectChars,
+      elapsedTime
+    );
     this.netWpm = this.calculateWPM(this.totalCorrectChars, elapsedTime);
   }
 
   calculateRealTimeWPM() {
     const elapsedTime = this.calculateElapsedTime(true);
     this.realTimeWpm = this.calculateWPM(this.totalCorrectChars, elapsedTime);
+    this.userStats.realTimeWpm = this.calculateWPM(
+      this.totalCorrectChars,
+      elapsedTime
+    );
   }
 
   calculateTotalAccuracy() {

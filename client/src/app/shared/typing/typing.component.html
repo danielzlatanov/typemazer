@@ -1,10 +1,6 @@
 <div class="mx-4">
-  <app-race-animation
-    [wordProgress]="getWordProgress()"
-    [roomUsers]="roomUsers"
-  ></app-race-animation>
-  <p class="text-xl m-3 font-bold text-green-500" *ngIf="countdownDuration > 0">
-    Starting in {{ countdownDuration }}
+  <p class="text-xl m-3 font-bold text-green-500" *ngIf="countdown > 0">
+    Starting in {{ countdown }}
   </p>
   <span *ngFor="let word of words; let i = index" class="select-none">
     <span
@@ -36,15 +32,15 @@
         currentIndex <= words.length - 1 &&
         userInput &&
         userInput !== words[currentIndex].slice(0, userInput.length),
-      'pointer-events-none opacity-50': countdownDuration > 0 || waitingMode
+      'pointer-events-none opacity-50': countdown > 0 || waitingMode
     }"
-    [disabled]="countdownDuration > 0 || waitingMode"
+    [disabled]="countdown > 0 || waitingMode"
     placeholder="{{
-      countdownDuration > 0 || waitingMode ? 'Type the text here...' : ''
+      countdown > 0 || waitingMode ? 'Type the text here...' : ''
     }}"
   />
 
-  <div class="text-green-600 font-bold mt-2">
+  <div class="text-green-600 font-bold mt-2" *ngIf="practiceCountdown">
     <p *ngIf="!endTime && !waitingMode">{{ realTimeWpm || 0 }} wpm</p>
     <p *ngIf="endTime">net: {{ netWpm }} wpm</p>
     <p *ngIf="endTime">gross/raw: {{ grossWpm }} wpm</p>
