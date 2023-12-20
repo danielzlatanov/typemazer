@@ -2,8 +2,10 @@ import {
   Component,
   ElementRef,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { IRoomUser } from '../interfaces/user';
@@ -16,9 +18,8 @@ import { interval } from 'rxjs';
   templateUrl: './typing.component.html',
   styleUrls: ['./typing.component.css'],
 })
-export class TypingComponent implements OnInit, OnDestroy {
-  dummyText: string =
-    "This is some dummy text I've typed just now. Type it as fast as possible.";
+export class TypingComponent implements OnInit, OnDestroy, OnChanges {
+  dummyText: string = "Just some dummy text I've typed just now.";
 
   words: string[] = this.dummyText.split(/\s+/);
 
@@ -53,27 +54,33 @@ export class TypingComponent implements OnInit, OnDestroy {
       this.countdown = this.practiceCountdown;
     }
 
-    setInterval(() => {
-      if (!this.waitingMode) {
-        this.startRace();
-      }
-    }, this.countdown);
-
     this.sendUserStatsUpdate();
     interval(2000).subscribe(() => {
       this.sendUserStatsUpdate();
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('waitingMode' in changes) {
+      this.callStartRace();
+    }
+  }
+
+  private callStartRace() {
+    if (!this.waitingMode) {
+      this.startRace();
+    }
+  }
+
   startRace() {
     if (!this.startTime) {
       this.startTime = Date.now();
-      console.log('race has started');
     }
 
     if (!this.realTimeWPMTimer) {
       this.startRealTimeWPMTimer();
     }
+
     this.enableInputField();
   }
 
