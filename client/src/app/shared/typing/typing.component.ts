@@ -36,6 +36,7 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
   netWpm!: number;
   realTimeWpm!: number;
   private realTimeWPMTimer: any;
+  private intervalSubscription: any;
 
   constructor(private socketService: SocketService) {}
 
@@ -55,7 +56,7 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this.sendUserStatsUpdate();
-    interval(2000).subscribe(() => {
+    this.intervalSubscription = interval(2000).subscribe(() => {
       this.sendUserStatsUpdate();
     });
   }
@@ -241,5 +242,8 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.stopRealTimeWPMTimer();
+    if (this.intervalSubscription) {
+      this.intervalSubscription.unsubscribe();
+    }
   }
 }
