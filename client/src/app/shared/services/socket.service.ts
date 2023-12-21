@@ -69,8 +69,19 @@ export class SocketService {
 
   onUserStatsUpdate(): Observable<IRoomUserStats> {
     return new Observable((observer) => {
-      this.socket.on('update-user-stats', (updatedUserStats: IRoomUserStats) => {
-        observer.next(updatedUserStats);
+      this.socket.on(
+        'update-user-stats',
+        (updatedUserStats: IRoomUserStats) => {
+          observer.next(updatedUserStats);
+        }
+      );
+    });
+  }
+
+  onJoinRejected(): Observable<{ reason: string }> {
+    return new Observable((observer) => {
+      this.socket.on('join-rejected', (data: { reason: string }) => {
+        observer.next(data);
       });
     });
   }
