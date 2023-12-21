@@ -28,6 +28,7 @@ app.post('/create-room', (req, res) => {
 
 const roomUsers = {};
 const roomState = {};
+const roomRaceTime = {};
 
 io.on('connection', socket => {
 	console.log('A user connected, user ID: ' + socket.id);
@@ -38,6 +39,7 @@ io.on('connection', socket => {
 		if (!roomUsers[roomId]) {
 			roomUsers[roomId] = [];
 			roomState[roomId] = { countdownTimerActive: false, countdownTimerFinished: false };
+			roomRaceTime[roomId] = 60; //! fixed initially
 		}
 
 		if (roomState[roomId].countdownTimerFinished) {
@@ -65,11 +67,9 @@ io.on('connection', socket => {
 			const { roomId, userStats } = data;
 
 			roomState[roomId][socket.id] = userStats;
-			console.log('room state after user-stats-update', roomState);
+			// console.log('room state after user-stats-update', roomState);
 
 			io.to(roomId).emit('update-user-stats', roomState[roomId]);
-
-			console.log(`User stats updated for user ${socket.id} in room ${roomId}`);
 		});
 
 		console.log(`User joined room ${roomId}, user ID: ${socket.id}`);
@@ -108,9 +108,23 @@ function startCountdownTimer(roomId) {
 			io.to(roomId).emit('countdown-timer-finished');
 			roomState[roomId].countdownTimerActive = false;
 			roomState[roomId].countdownTimerFinished = true;
+
+			startTotalTimeAllowedTimer(roomId);
 		}
 	}, 1000);
 }
+
+function startTotalTimeAllowedTimer(roomId) {
+	const intervalId = setInterval(() => {
+		roomRaceTime[roomId]--;
+
+		console.log(`Room ${roomId} TOTAL_RACE_TIME: ${roomRaceTime[roomId]}`);
+
+		if (roomRaceTime[roomId] <= 0) {
+			clearInterval(intervalId);
+			io.to(roomId).emit('total-time-allowed-finished');
+
+			console.log('race has finished due to `total-time-allowed-finished`');
 		}
 	}, 1000);
 }
