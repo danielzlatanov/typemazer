@@ -37,7 +37,13 @@ io.on('connection', socket => {
 
 		if (!roomUsers[roomId]) {
 			roomUsers[roomId] = [];
-			roomState[roomId] = { countdownTimerActive: false };
+			roomState[roomId] = { countdownTimerActive: false, countdownTimerFinished: false };
+		}
+
+		if (roomState[roomId].countdownTimerFinished) {
+			console.log(`${username} with id: '${socket.id}' rejected to join room ${roomId}, ctdown finished`);
+			socket.emit('join-rejected', { reason: 'countdown-finished' });
+			return;
 		}
 
 		const userData = {
@@ -101,6 +107,10 @@ function startCountdownTimer(roomId) {
 			clearInterval(intervalId);
 			io.to(roomId).emit('countdown-timer-finished');
 			roomState[roomId].countdownTimerActive = false;
+			roomState[roomId].countdownTimerFinished = true;
+		}
+	}, 1000);
+}
 		}
 	}, 1000);
 }
