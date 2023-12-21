@@ -23,7 +23,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private socketService: SocketService,
+    private socketService: SocketService
   ) {
     this.roomId = this.route.snapshot.paramMap.get('roomId');
 
@@ -42,6 +42,15 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.socketService
+      .onJoinRejected()
+      .subscribe((data: { reason: string }) => {
+        if (data.reason === 'countdown-finished') {
+          console.log('User rejected to join due to countdown finished');
+          this.router.navigate(['/type/new-room']);
+        }
+      });
+
     history.pushState(null, '');
 
     fromEvent(window, 'popstate')
