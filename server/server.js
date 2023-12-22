@@ -78,21 +78,30 @@ io.on('connection', socket => {
 	});
 
 	socket.on('disconnect', () => {
+		const roomId = findRoomIdByUserId(socket.id);
 		removeUserFromRooms(socket.id);
 		console.log(`User disconnected, user ID: ${socket.id}`);
+
+		if (roomId && (!roomUsers[roomId] || roomUsers[roomId].length === 0)) {
+			if (roomRaceTime[roomId]) {
+				delete roomRaceTime[roomId];
+				console.log(`Race time for room '${roomId}' removed.`);
+			}
+
+			delete roomUsers[roomId];
+			console.log(`Empty room '${roomId}' removed.`);
+			console.log('Users in all rooms ', roomUsers);
+		}
 	});
 });
 
-setInterval(cleanUpEmptyRooms, 1800000);
-
-function cleanUpEmptyRooms() {
+function findRoomIdByUserId(userId) {
 	for (const roomId in roomUsers) {
-		if (roomUsers[roomId].length === 0) {
-			delete roomUsers[roomId];
-			console.log(`Room '${roomId}' removed due to inactivity.`);
-			console.log('Users in all rooms ', roomUsers);
+		if (roomUsers[roomId].some(user => user.id === userId)) {
+			return roomId;
 		}
 	}
+	return null;
 }
 
 function startCountdownTimer(roomId) {
@@ -116,15 +125,17 @@ function startCountdownTimer(roomId) {
 
 function startTotalTimeAllowedTimer(roomId) {
 	const intervalId = setInterval(() => {
-		roomRaceTime[roomId]--;
+		if (roomRaceTime[roomId] && roomRaceTime[roomId] > 0) {
+			roomRaceTime[roomId]--;
+			console.log(`Room ${roomId} TOTAL_RACE_TIME: ${roomRaceTime[roomId]}`);
+		}
 
-		console.log(`Room ${roomId} TOTAL_RACE_TIME: ${roomRaceTime[roomId]}`);
-
-		if (roomRaceTime[roomId] <= 0) {
+		if (!roomRaceTime[roomId] || roomRaceTime[roomId] <= 0) {
 			clearInterval(intervalId);
-			io.to(roomId).emit('total-time-allowed-finished');
+			io.to(roomId).emit('race-time-finished');
 
-			console.log('race has finished due to `total-time-allowed-finished`');
+			console.log('race has finished due to `race-time-finished`');
+
 		}
 	}, 1000);
 }
