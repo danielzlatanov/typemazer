@@ -33,7 +33,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     }
 
     if (this.roomId && this.username) {
-      this.socketService.connect();
       this.socketService.joinRoom(this.roomId, this.username);
       this.subscribeToUpdatedUsers();
     } else {

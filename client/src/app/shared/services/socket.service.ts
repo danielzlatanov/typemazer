@@ -14,17 +14,17 @@ export class SocketService {
   constructor() {}
 
   connect() {
-    this.socket = io('http://localhost:8000');
+    if (!this.socket || !this.socket.connected) {
+      this.socket = io('http://localhost:8000');
 
-    this.socket.on('connect', () => {
-      if (this.socket.id) {
+      this.socket.on('connect', () => {
         console.log('Connected to the server with ID: ', this.socket.id);
-      }
-    });
+      });
 
-    this.socket.on('disconnect', () => {
-      console.log('Disconnected from the server');
-    });
+      this.socket.on('disconnect', () => {
+        console.log('Disconnected from the server');
+      });
+    }
   }
 
   joinRoom(roomId: string, username: string) {
