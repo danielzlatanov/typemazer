@@ -66,7 +66,9 @@ io.on('connection', socket => {
 		socket.on('user-stats-update', data => {
 			const { roomId, userStats } = data;
 
-			roomState[roomId][socket.id] = userStats;
+			if (roomState[roomId]) {
+				roomState[roomId][socket.id] = userStats;
+			}
 			// console.log('room state after user-stats-update', roomState);
 
 			io.to(roomId).emit('update-user-stats', roomState[roomId]);
@@ -86,6 +88,11 @@ io.on('connection', socket => {
 			if (roomRaceTime[roomId]) {
 				delete roomRaceTime[roomId];
 				console.log(`Race time for room '${roomId}' removed.`);
+			}
+
+			if (roomState[roomId]) {
+				delete roomState[roomId];
+				console.log(`Room state for room '${roomId}' removed.`);
 			}
 
 			delete roomUsers[roomId];
@@ -133,9 +140,14 @@ function startTotalTimeAllowedTimer(roomId) {
 		if (!roomRaceTime[roomId] || roomRaceTime[roomId] <= 0) {
 			clearInterval(intervalId);
 			io.to(roomId).emit('race-time-finished');
-
 			console.log('race has finished due to `race-time-finished`');
 
+			delete roomRaceTime[roomId];
+			console.log(`Race time for room '${roomId}' removed.`);
+			delete roomState[roomId];
+			console.log(`Room state for room '${roomId}' removed.`);
+			delete roomUsers[roomId];
+			console.log(`Empty room '${roomId}' removed.`);
 		}
 	}, 1000);
 }
