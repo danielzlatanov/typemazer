@@ -15,6 +15,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   username!: string;
   roomUsers: IRoomUser[] = [];
   countdown!: number;
+  totalRaceTime!: number;
   waitingMode: boolean = true;
   roomUserStats!: IRoomUserStats;
 
@@ -71,6 +72,11 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       this.waitingMode = false;
     });
 
+    this.socketService
+      .onUpdateTotalRaceTime()
+      .subscribe((totalRaceTime: number) => {
+        this.totalRaceTime = totalRaceTime;
+      });
     this.socketService
       .onUserStatsUpdate()
       .subscribe((updatedUserStats: IRoomUserStats) => {

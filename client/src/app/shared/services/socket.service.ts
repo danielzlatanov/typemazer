@@ -85,4 +85,12 @@ export class SocketService {
       });
     });
   }
+
+  onUpdateTotalRaceTime(): Observable<number> {
+    return new Observable((observer) => {
+      this.socket.on('update-total-race-time', (totalRaceTime: number) => {
+        observer.next(totalRaceTime);
+      });
+    });
+  }
 }

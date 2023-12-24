@@ -6,6 +6,7 @@
 ></app-typing>
 <div *ngIf="roomUsers.length > 0" class="m-4">
   <ul>
+    <p *ngIf="totalRaceTime">race time: {{ totalRaceTime }}</p>
     <li *ngFor="let user of roomUsers" class="m-2">
       <div class="flex items-center justify-between relative w-10/12 h-6">
         <app-race-animation

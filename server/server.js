@@ -134,7 +134,7 @@ function startTotalTimeAllowedTimer(roomId) {
 	const intervalId = setInterval(() => {
 		if (roomRaceTime[roomId] && roomRaceTime[roomId] > 0) {
 			roomRaceTime[roomId]--;
-			console.log(`Room ${roomId} TOTAL_RACE_TIME: ${roomRaceTime[roomId]}`);
+			io.to(roomId).emit('update-total-race-time', roomRaceTime[roomId]);
 		}
 
 		if (!roomRaceTime[roomId] || roomRaceTime[roomId] <= 0) {
