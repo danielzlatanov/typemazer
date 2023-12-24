@@ -77,6 +77,14 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       .subscribe((totalRaceTime: number) => {
         this.totalRaceTime = totalRaceTime;
       });
+
+    this.socketService.onRaceTimeFinished().subscribe(() => {
+      console.log('Race finished due to `race-time`');
+      if (this.totalRaceTime <= 0) {
+        this.router.navigate(['/type/new-room']); //! to be changed
+      }
+    });
+
     this.socketService
       .onUserStatsUpdate()
       .subscribe((updatedUserStats: IRoomUserStats) => {

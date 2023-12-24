@@ -93,4 +93,12 @@ export class SocketService {
       });
     });
   }
+
+  onRaceTimeFinished(): Observable<void> {
+    return new Observable((observer) => {
+      this.socket.on('race-time-finished', () => {
+        observer.next();
+      });
+    });
+  }
 }
