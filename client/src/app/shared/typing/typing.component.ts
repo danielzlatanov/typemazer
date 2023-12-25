@@ -19,7 +19,7 @@ import { interval } from 'rxjs';
   styleUrls: ['./typing.component.css'],
 })
 export class TypingComponent implements OnInit, OnDestroy, OnChanges {
-  dummyText: string = "Just some dummy text I've typed just now.";
+  dummyText: string = "Some dummy text I've typed just now.";
 
   words: string[] = this.dummyText.split(/\s+/);
 
@@ -161,14 +161,16 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
       this.calculateNetWPM(this.totalElapsedTime);
       this.calculateTotalAccuracy();
       this.stopRealTimeWPMTimer();
+
+      this.userStats.hasFinished = true;
+      this.sendUserStatsUpdate();
+      // console.log('User has finished:', this.userStats.hasFinished);
     }
   }
 
   sendUserStatsUpdate() {
     if (this.roomId) {
       this.socketService.sendUserStatsUpdate(this.roomId, this.userStats);
-    } else {
-      console.log('sendUserStatsUpdate did not receive `roomId`');
     }
   }
 
