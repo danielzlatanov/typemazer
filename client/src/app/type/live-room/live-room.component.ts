@@ -20,6 +20,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   roomUserStats!: IRoomUserStats;
 
   private unsubscriber: Subject<void> = new Subject<void>();
+  private isCountdownFinished: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,6 +48,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       .subscribe((data: { reason: string }) => {
         if (data.reason === 'countdown-finished') {
           console.log('User rejected to join due to countdown finished');
+          this.isCountdownFinished = true;
           this.router.navigate(['/type/new-room']);
         }
       });
@@ -93,6 +95,10 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
         this.roomUserStats = userStatsWithoutTimer;
         // console.log('room user stats updated', this.roomUserStats);
       });
+  }
+
+  isLiveRoomVisible(): boolean {
+    return !this.isCountdownFinished && this.roomUsers.length > 0;
   }
 
   getUserStatsValue(userId: string, property: string): number {
