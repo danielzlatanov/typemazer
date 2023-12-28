@@ -29,12 +29,15 @@ app.post('/create-room', (req, res) => {
 const roomUsers = {};
 const roomState = {};
 const roomRaceTime = {};
+const usersFinished = new Set();
 
 io.on('connection', socket => {
 	console.log('A user connected, user ID: ' + socket.id);
 
 	socket.on('join-room', data => {
 		const { roomId, username } = data;
+
+		usersFinished.clear();
 
 		if (!roomUsers[roomId]) {
 			roomUsers[roomId] = [];
@@ -68,6 +71,20 @@ io.on('connection', socket => {
 
 			if (roomState[roomId]) {
 				roomState[roomId][socket.id] = userStats;
+
+				if (
+					userStats.hasFinished &&
+					!Array.from(usersFinished).some(entry => entry.startsWith(`${socket.id}:`))
+				) {
+					console.log('user has finished', socket.id);
+
+					const place = usersFinished.size + 1;
+					usersFinished.add(`${socket.id}:${place}`);
+
+					io.to(roomId).emit('user-finished', { userId: socket.id, place });
+
+					console.log('users Finished', usersFinished);
+				}
 			}
 			// console.log('room state after user-stats-update', roomState);
 
@@ -97,7 +114,6 @@ io.on('connection', socket => {
 
 			delete roomUsers[roomId];
 			console.log(`Empty room '${roomId}' removed.`);
-			console.log('Users in all rooms ', roomUsers);
 		}
 	});
 });
