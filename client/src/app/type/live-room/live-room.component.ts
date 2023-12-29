@@ -110,6 +110,21 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     return !this.isCountdownFinished && this.roomUsers.length > 0;
   }
 
+  getPlaceSuffix(place: number): string {
+    const lastDigit = place % 10;
+    const secondLastDigit = Math.floor((place % 100) / 10);
+
+    if (lastDigit === 1 && secondLastDigit !== 1) {
+      return 'st';
+    } else if (lastDigit === 2 && secondLastDigit !== 1) {
+      return 'nd';
+    } else if (lastDigit === 3 && secondLastDigit !== 1) {
+      return 'rd';
+    } else {
+      return 'th';
+    }
+  }
+
   getUserStatsValue(userId: string, property: string): number {
     return this.roomUserStats && this.roomUserStats[userId]
       ? this.roomUserStats[userId][property]

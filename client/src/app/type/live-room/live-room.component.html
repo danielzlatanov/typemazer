@@ -24,7 +24,10 @@
             *ngIf="getUserStatsValue(user.id, 'realTimeWordProgress') == 100"
           >
             {{ getUserStatsValue(user.id, "netWpm") }} wpm -
-            {{ user.place }}
+            <span [ngClass]="user.place == 1 ? 'text-yellow-500' : ''">
+              {{ user.place }}
+              <sup *ngIf="user.place">{{ getPlaceSuffix(user.place) }}</sup>
+            </span>
           </span>
         </div>
       </li>
