@@ -95,6 +95,15 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
         this.roomUserStats = userStatsWithoutTimer;
         // console.log('room user stats updated', this.roomUserStats);
       });
+
+    this.socketService.onUserFinished().subscribe((data) => {
+      const { userId, place } = data;
+      const userIndex = this.roomUsers.findIndex((user) => user.id === userId);
+
+      if (userIndex !== -1) {
+        this.roomUsers[userIndex].place = place;
+      }
+    });
   }
 
   isLiveRoomVisible(): boolean {

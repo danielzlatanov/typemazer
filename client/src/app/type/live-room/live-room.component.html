@@ -9,21 +9,22 @@
     <ul>
       <p *ngIf="totalRaceTime">race time: {{ totalRaceTime }}</p>
       <li *ngFor="let user of roomUsers" class="m-2">
-        <div class="flex items-center justify-between relative w-10/12 h-6">
+        <div class="flex items-center justify-between relative w-9/12 h-6">
           <app-race-animation
             [roomUser]="user"
             [userProgress]="getUserStatsValue(user.id, 'realTimeWordProgress')"
           ></app-race-animation>
           <span
-            class="text-green-500 absolute -right-24"
+            class="text-green-500 absolute -right-40"
             *ngIf="getUserStatsValue(user.id, 'realTimeWordProgress') != 100"
             >{{ getUserStatsValue(user.id, "realTimeWpm") }} wpm</span
           >
           <span
-            class="font-bold absolute -right-24"
+            class="font-bold absolute -right-40"
             *ngIf="getUserStatsValue(user.id, 'realTimeWordProgress') == 100"
           >
-            {{ getUserStatsValue(user.id, "netWpm") }} wpm
+            {{ getUserStatsValue(user.id, "netWpm") }} wpm -
+            {{ user.place }}
           </span>
         </div>
       </li>
