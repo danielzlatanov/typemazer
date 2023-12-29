@@ -101,4 +101,15 @@ export class SocketService {
       });
     });
   }
+
+  onUserFinished(): Observable<{ userId: string; place: number }> {
+    return new Observable((observer) => {
+      this.socket.on(
+        'user-finished',
+        (data: { userId: string; place: number }) => {
+          observer.next(data);
+        }
+      );
+    });
+  }
 }
