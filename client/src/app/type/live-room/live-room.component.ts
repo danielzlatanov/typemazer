@@ -133,9 +133,22 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   private subscribeToUpdatedUsers() {
     this.socketService.onUpdateUsers().subscribe((updatedUsers) => {
-      this.roomUsers = updatedUsers;
+      this.roomUsers = this.sortUsers(updatedUsers, this.username);
       console.log('updated users: ', updatedUsers);
     });
+  }
+
+  private sortUsers(users: IRoomUser[], currentUsername: string): IRoomUser[] {
+    const currentUserIndex = users.findIndex(
+      (user) => user.username === currentUsername
+    );
+
+    if (currentUserIndex !== -1) {
+      const currentUser = users.splice(currentUserIndex, 1)[0];
+      users.unshift(currentUser);
+    }
+
+    return users;
   }
 
   ngOnDestroy(): void {
