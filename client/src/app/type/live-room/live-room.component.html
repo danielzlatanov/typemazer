@@ -6,25 +6,32 @@
     [roomId]="roomId"
   ></app-typing>
   <div *ngIf="roomUsers.length > 0" class="m-4">
-    <ul>
-      <p *ngIf="totalRaceTime">race time: {{ totalRaceTime }}</p>
-      <li *ngFor="let user of roomUsers" class="m-2">
-        <div class="flex items-center justify-between relative w-9/12 h-6">
+    <ul class="list-none p-0">
+      <p *ngIf="totalRaceTime" class="text-lg">
+        race time:
+        <span [ngClass]="{ 'text-red-600 animate-pulse': totalRaceTime <= 5 }">
+          {{ totalRaceTime }}
+        </span>
+      </p>
+      <li *ngFor="let user of roomUsers" class="my-2">
+        <div
+          class="flex items-center justify-between relative w-9/12 h-10 text-xl"
+        >
           <app-race-animation
             [roomUser]="user"
             [userProgress]="getUserStatsValue(user.id, 'realTimeWordProgress')"
           ></app-race-animation>
           <span
-            class="text-green-500 absolute -right-40"
+            class="text-green-500 absolute -right-56"
             *ngIf="getUserStatsValue(user.id, 'realTimeWordProgress') != 100"
             >{{ getUserStatsValue(user.id, "realTimeWpm") }} wpm</span
           >
           <span
-            class="font-bold absolute -right-40"
+            class="font-semibold absolute -right-56"
             *ngIf="getUserStatsValue(user.id, 'realTimeWordProgress') == 100"
           >
             {{ getUserStatsValue(user.id, "netWpm") }} wpm -
-            <span [ngClass]="user.place == 1 ? 'text-yellow-500' : ''">
+            <span [ngClass]="user.place == 1 ? 'text-green-500' : ''">
               {{ user.place }}
               <sup *ngIf="user.place">{{ getPlaceSuffix(user.place) }}</sup>
             </span>

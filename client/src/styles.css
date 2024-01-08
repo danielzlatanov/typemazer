@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import "primeng/resources/themes/lara-dark-green/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";

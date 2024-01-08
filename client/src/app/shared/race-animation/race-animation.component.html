@@ -3,10 +3,10 @@
     #myCharacter
     [ngClass]="{
       'w-fit': roomUser.username.length >= 3,
-      'w-6': roomUser.username.length < 3
+      'w-10': roomUser.username.length < 3
     }"
-    class="absolute h-6 top-0 left-0 bg-yellow-500 rounded-lg transition-left duration-300 ease-linear text-xs font-thin flex items-center justify-center px-1"
+    class="absolute h-10 top-0 left-0 bg-green-500 rounded-lg transition-left duration-300 ease-linear text-black text-lg lowercase flex items-center justify-center px-1"
   >
-    <span>{{ roomUser.username }}</span>
+    <span>{{ roomUser.username | slice : 0 : 5 }}</span>
   </div>
 </ng-container>

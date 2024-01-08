@@ -1,31 +1,34 @@
-<div class="text-blue-600 ml-4 flex flex-col w-52 space-y-4">
-  <h1>Play with your friends</h1>
+<div class="p-col-12 p-md-6 p-lg-4 p-col-align-center">
+  <h1 class="ml-5">Multiplayer</h1>
 
-  <input
-    [(ngModel)]="username"
-    placeholder="Enter your username"
-    class="focus:outline-none border-2 border-green-500 pl-1"
-  />
+  <form
+    #roomForm="ngForm"
+    (ngSubmit)="joinRoom(inputRoomId.value)"
+    class="ml-4 space-y-3"
+  >
+    <input
+      [(ngModel)]="username"
+      placeholder="username"
+      class="p-inputtext block"
+      name="username"
+      required
+    />
 
-  <input
-    #inputRoomId
-    placeholder="Enter room ID"
-    class="focus:outline-none border-2 border-green-500 pl-1"
-  />
+    <input
+      #inputRoomId="ngModel"
+      placeholder="room ID"
+      class="p-inputtext block"
+      name="roomId"
+      ngModel
+      required
+    />
 
-  <div class="space-x-2">
     <button
-      (click)="createRoom()"
-      class="py-1 px-2.5 text-sm bg-green-400 rounded text-white"
+      type="submit"
+      class="p-button font-semibold leading-3 px-3"
+      [disabled]="roomForm.invalid"
     >
-      create
+      Join
     </button>
-
-    <button
-      (click)="joinRoom(inputRoomId.value)"
-      class="py-1 px-2.5 text-sm bg-blue-400 rounded text-white"
-    >
-      join
-    </button>
-  </div>
+  </form>
 </div>

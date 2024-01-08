@@ -2,10 +2,10 @@
   <p class="text-xl m-3 font-bold text-green-500" *ngIf="countdown > 0">
     Starting in {{ countdown }}
   </p>
-  <span *ngFor="let word of words; let i = index" class="select-none">
+  <span *ngFor="let word of words; let i = index" class="select-none text-2xl">
     <span
       [ngClass]="{
-        'text-green-600 underline': i === currentIndex,
+        'text-green-500 underline': i === currentIndex,
         'text-red-600':
           i === currentIndex &&
           userInput &&
@@ -25,7 +25,7 @@
     (keydown.space)="onSpaceKey($event)"
     (paste)="handlePaste($event)"
     (drop)="handleDrop($event)"
-    class="focus:outline-none border-2 pl-1 solid border-green-500 mt-2 block"
+    class="focus:outline-none border-2 pl-2 solid border-green-500 mt-4 block p-inputtext"
     [ngClass]="{
       'bg-rose-200 text-gray-600':
         currentIndex <= words.length - 1 &&
@@ -39,7 +39,7 @@
     }}"
   />
 
-  <div class="text-green-600 font-bold mt-2" *ngIf="practiceCountdown">
+  <div class="text-green-500 font-bold mt-2" *ngIf="practiceCountdown">
     <p *ngIf="!endTime && !waitingMode">{{ realTimeWpm || 0 }} wpm</p>
     <p *ngIf="endTime">net: {{ netWpm }} wpm</p>
     <p *ngIf="endTime">gross/raw: {{ grossWpm }} wpm</p>
