@@ -29,7 +29,7 @@ app.post('/create-room', (req, res) => {
 const roomUsers = {};
 const roomState = {};
 const roomRaceTime = {};
-const usersFinished = new Set();
+const usersFinishedByRoom = {};
 
 io.on('connection', socket => {
 	console.log('A user connected, user ID: ' + socket.id);
@@ -37,12 +37,11 @@ io.on('connection', socket => {
 	socket.on('join-room', data => {
 		const { roomId, username } = data;
 
-		usersFinished.clear();
-
 		if (!roomUsers[roomId]) {
 			roomUsers[roomId] = [];
 			roomState[roomId] = { countdownTimerActive: false, countdownTimerFinished: false };
-			roomRaceTime[roomId] = 60; //! fixed initially
+			roomRaceTime[roomId] = 20; //! fixed initially
+			usersFinishedByRoom[roomId] = new Set();
 		}
 
 		if (roomState[roomId].countdownTimerFinished) {
@@ -74,16 +73,16 @@ io.on('connection', socket => {
 
 				if (
 					userStats.hasFinished &&
-					!Array.from(usersFinished).some(entry => entry.startsWith(`${socket.id}:`))
+					!Array.from(usersFinishedByRoom[roomId]).some(entry => entry.startsWith(`${socket.id}:`))
 				) {
 					console.log('user has finished', socket.id);
 
-					const place = usersFinished.size + 1;
-					usersFinished.add(`${socket.id}:${place}`);
+					const place = usersFinishedByRoom[roomId].size + 1;
+					usersFinishedByRoom[roomId].add(`${socket.id}:${place}`);
 
 					io.to(roomId).emit('user-finished', { userId: socket.id, place });
 
-					console.log('users Finished', usersFinished);
+					console.log('users Finished', usersFinishedByRoom[roomId]);
 				}
 			}
 			// console.log('room state after user-stats-update', roomState);
@@ -114,6 +113,9 @@ io.on('connection', socket => {
 
 			delete roomUsers[roomId];
 			console.log(`Empty room '${roomId}' removed.`);
+
+			delete usersFinishedByRoom[roomId];
+			console.log(`Users finished for room '${roomId}' removed.`);
 		}
 	});
 });
@@ -130,7 +132,8 @@ function findRoomIdByUserId(userId) {
 function startCountdownTimer(roomId) {
 	io.to(roomId).emit('countdown-timer-started');
 
-	let countdown = 10;
+	// let countdown = 10;
+	let countdown = 1;
 	const intervalId = setInterval(() => {
 		io.to(roomId).emit('countdown-update', countdown);
 		countdown--;
@@ -164,6 +167,8 @@ function startTotalTimeAllowedTimer(roomId) {
 			console.log(`Room state for room '${roomId}' removed.`);
 			delete roomUsers[roomId];
 			console.log(`Empty room '${roomId}' removed.`);
+			delete usersFinishedByRoom[roomId];
+			console.log(`Users finished for room '${roomId}' removed.`);
 		}
 	}, 1000);
 }
