@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const axios = require('axios');
 const https = require('https');
 
+const MAX_USERS_PER_ROOM = 10;
 const PORT = process.env.PORT || 8000;
 
 const app = express();
@@ -78,6 +79,12 @@ io.on('connection', socket => {
 			return;
 		}
 
+		if (roomUsers[roomId].length >= MAX_USERS_PER_ROOM) {
+			console.log(`${username} with id: '${socket.id}' rejected - room ${roomId} is full`);
+			socket.emit('join-rejected', { reason: 'room-full' });
+			return;
+		}
+
 		const userData = {
 			id: socket.id,
 			username: username,
@@ -88,7 +95,9 @@ io.on('connection', socket => {
 		socket.join(roomId);
 		io.to(roomId).emit('update-users', getRoomUsers(roomId));
 
-		if (roomUsers[roomId].length === 2 && !roomState[roomId].countdownTimerActive) {
+		if (roomUsers[roomId].length === MAX_USERS_PER_ROOM) {
+			console.log(`Room ${roomId} is now full. Starting countdown immediately.`);
+
 			startCountdownTimer(roomId);
 			roomState[roomId].countdownTimerActive = true;
 		}
