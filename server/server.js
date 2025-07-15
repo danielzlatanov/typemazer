@@ -8,6 +8,8 @@ const axios = require('axios');
 const https = require('https');
 
 const MAX_USERS_PER_ROOM = 10;
+const ROOM_FILL_TIMEOUT = 20;
+
 const PORT = process.env.PORT || 8000;
 
 const app = express();
@@ -46,6 +48,7 @@ const roomUsers = {};
 const roomState = {};
 const roomRaceTime = {};
 const usersFinishedByRoom = {};
+const roomFillTimers = {};
 
 io.on('connection', socket => {
 	console.log('A user connected, user ID: ' + socket.id);
@@ -98,8 +101,41 @@ io.on('connection', socket => {
 		if (roomUsers[roomId].length === MAX_USERS_PER_ROOM) {
 			console.log(`Room ${roomId} is now full. Starting countdown immediately.`);
 
+			if (roomFillTimers[roomId]) {
+				clearTimeout(roomFillTimers[roomId]);
+				delete roomFillTimers[roomId];
+			}
 			startCountdownTimer(roomId);
 			roomState[roomId].countdownTimerActive = true;
+		}
+
+		if (
+			roomUsers[roomId].length >= 2 &&
+			roomUsers[roomId].length < MAX_USERS_PER_ROOM &&
+			!roomFillTimers[roomId] &&
+			!roomState[roomId].countdownTimerActive &&
+			!roomState[roomId].countdownTimerFinished
+		) {
+			console.log(
+				`Room ${roomId} reached ${roomUsers[roomId].length} players, starting fill timer of ${ROOM_FILL_TIMEOUT}.`
+			);
+
+			roomFillTimers[roomId] = setTimeout(() => {
+				if (
+					roomUsers[roomId] &&
+					roomUsers[roomId].length >= 2 &&
+					roomUsers[roomId].length <= MAX_USERS_PER_ROOM &&
+					!roomState[roomId].countdownTimerActive &&
+					!roomState[roomId].countdownTimerFinished
+				) {
+					console.log(
+						`Room ${roomId} fill timeout expired. Starting countdown with ${roomUsers[roomId].length} players.`
+					);
+					startCountdownTimer(roomId);
+					roomState[roomId].countdownTimerActive = true;
+				}
+				delete roomFillTimers[roomId];
+			}, ROOM_FILL_TIMEOUT * 1000);
 		}
 
 		socket.on('user-stats-update', data => {
@@ -136,6 +172,13 @@ io.on('connection', socket => {
 		const roomId = findRoomIdByUserId(socket.id);
 		removeUserFromRooms(socket.id);
 		console.log(`User disconnected, user ID: ${socket.id}`);
+
+		if (!roomUsers[roomId] || roomUsers[roomId].length === 0) {
+			if (roomFillTimers[roomId]) {
+				clearTimeout(roomFillTimers[roomId]);
+				delete roomFillTimers[roomId];
+			}
+		}
 
 		if (roomId && (!roomUsers[roomId] || roomUsers[roomId].length === 0)) {
 			if (roomRaceTime[roomId]) {
