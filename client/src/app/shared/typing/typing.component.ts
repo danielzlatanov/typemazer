@@ -58,6 +58,7 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
       this.socketService.onRaceText().subscribe((text) => {
         this.raceText = text;
         this.words = this.raceText.split(/\s+/);
+        this.resetRaceState();
       });
     } else {
       // this.fetchRaceText(200);
@@ -79,6 +80,7 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
     if ('text' in changes && this.text) {
       this.raceText = this.text;
       this.words = this.raceText.split(/\s+/);
+      this.resetRaceState();
     }
 
     if ('waitingMode' in changes) {
@@ -96,6 +98,7 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
           // console.log('quote data received:', data);
           this.raceText = data.content;
           this.words = this.raceText.split(/\s+/);
+          this.resetRaceState();
         },
         error: (err) => {
           console.error('Failed to fetch race text', err);
@@ -104,6 +107,23 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
         },
       });
   }
+
+  resetRaceState() {
+    this.userInput = '';
+    this.currentIndex = 0;
+    this.totalCorrectChars = 0;
+    this.errors = 0;
+    this.totalAccuracy = 0;
+    this.startTime = 0;
+    this.endTime = 0;
+    this.totalElapsedTime = 0;
+    this.grossWpm = 0;
+    this.netWpm = 0;
+    this.realTimeWpm = 0;
+
+    this.stopRealTimeWPMTimer();
+  }
+
   private callStartRace() {
     if (!this.waitingMode) {
       this.startRace();
