@@ -94,7 +94,6 @@ io.on('connection', socket => {
 		if (!roomUsers[roomId]) {
 			roomUsers[roomId] = [];
 			roomState[roomId] = { countdownTimerActive: false, countdownTimerFinished: false };
-			roomRaceTime[roomId] = 20; //! fixed initially
 			usersFinishedByRoom[roomId] = new Set();
 
 			try {
@@ -102,8 +101,20 @@ io.on('connection', socket => {
 					httpsAgent: agent,
 					params: { minLength: 50 },
 				});
+
 				roomState[roomId].text = response.data.content;
+				const textLength = response.data.length;
+
+				const baseMinutes = textLength / 250;
+				const bufferFactor = 1.3; //! ~30% more time than the bare minimum
+				let raceTimeSeconds = Math.ceil(baseMinutes * bufferFactor * 60);
+				raceTimeSeconds = Math.max(20, Math.min(raceTimeSeconds, 300));
+
+				roomRaceTime[roomId] = raceTimeSeconds;
+
 				console.log(`Race text for room ${roomId} initialized:`, roomState[roomId].text);
+				console.log(`Race text length for ${roomId}:`, textLength);
+				console.log(`Race time for room ${roomId}: ${raceTimeSeconds} seconds`);
 			} catch (err) {
 				console.error(`Failed to fetch race text for room ${roomId}:`, err);
 				roomState[roomId].text = 'Error fetching text, please try again.';
