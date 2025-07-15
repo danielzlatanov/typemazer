@@ -61,8 +61,7 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
         this.resetRaceState();
       });
     } else {
-      // this.fetchRaceText(200);
-      this.fetchRaceText(40);
+      this.fetchRaceText(50);
     }
 
     if (this.practiceCountdown) {

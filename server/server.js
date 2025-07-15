@@ -100,7 +100,7 @@ io.on('connection', socket => {
 			try {
 				const response = await axios.get('https://api.quotable.io/random', {
 					httpsAgent: agent,
-					params: { minLength: 50, maxLength: 150 },
+					params: { minLength: 50 },
 				});
 				roomState[roomId].text = response.data.content;
 				console.log(`Race text for room ${roomId} initialized:`, roomState[roomId].text);
