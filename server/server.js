@@ -52,6 +52,12 @@ io.on('connection', socket => {
 	socket.on('join-room', data => {
 		const { roomId, username } = data;
 
+		if (!roomId || typeof roomId !== 'string' || roomId.trim() === '') {
+			console.log(`Invalid roomId from user ${socket.id}`);
+			socket.emit('join-rejected', { reason: 'invalid-room-id' });
+			return;
+		}
+
 		const cleanUsername = sanitizeUsername(username);
 		if (!cleanUsername) {
 			console.log(`Invalid or empty username from user ${socket.id}`);
