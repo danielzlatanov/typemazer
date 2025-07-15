@@ -26,7 +26,7 @@ export class NewRoomComponent {
         if (this.username) {
           this.handleRoomNavigation(this.roomId, this.username);
         } else {
-          this.router.navigate(['/type/new-room']);
+          this.router.navigate(['/type/room']);
         }
       });
   }
@@ -35,7 +35,7 @@ export class NewRoomComponent {
     if (inputRoomId && this.username) {
       this.handleRoomNavigation(inputRoomId, this.username);
     } else {
-      this.router.navigate(['/type/new-room']);
+      this.router.navigate(['/type/room']);
     }
   }
 

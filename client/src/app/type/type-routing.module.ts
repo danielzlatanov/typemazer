@@ -10,7 +10,7 @@ const routes: Routes = [
     component: PracticeComponent,
   },
   {
-    path: 'new-room',
+    path: 'room',
     component: NewRoomComponent,
   },
   {

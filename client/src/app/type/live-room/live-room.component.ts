@@ -38,7 +38,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       this.socketService.joinRoom(this.roomId, this.username);
       this.subscribeToUpdatedUsers();
     } else {
-      this.router.navigate(['/type/new-room']);
+      this.router.navigate(['/type/room']);
     }
   }
 
@@ -49,7 +49,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
         if (data.reason === 'countdown-finished') {
           console.log('User rejected to join due to countdown finished');
           this.isCountdownFinished = true;
-          this.router.navigate(['/type/new-room']);
+          this.router.navigate(['/type/room']);
         }
       });
 
@@ -83,7 +83,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.socketService.onRaceTimeFinished().subscribe(() => {
       console.log('Race finished due to `race-time`');
       if (this.totalRaceTime <= 0) {
-        this.router.navigate(['/type/new-room']); //! to be changed
+        this.router.navigate(['/type/room']); //! to be changed
       }
     });
 
