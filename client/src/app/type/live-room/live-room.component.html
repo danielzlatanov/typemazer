@@ -7,7 +7,7 @@
   ></app-typing>
   <div *ngIf="roomUsers.length > 0" class="m-4">
     <ul class="list-none p-0">
-      <p *ngIf="totalRaceTime" class="text-lg">
+      <p *ngIf="totalRaceTime" class="text-lg text-white">
         race time:
         <span [ngClass]="{ 'text-red-600 animate-pulse': totalRaceTime <= 5 }">
           {{ totalRaceTime }}
@@ -15,7 +15,7 @@
       </p>
       <li *ngFor="let user of roomUsers" class="my-2">
         <div
-          class="flex items-center justify-between relative w-9/12 h-10 text-xl"
+          class="flex items-center justify-between relative w-9/12 h-10 text-xl text-white"
         >
           <app-race-animation
             [roomUser]="user"
