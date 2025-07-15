@@ -12,6 +12,8 @@ import { IRoomUser } from '../interfaces/user';
 import { UserStats } from '../models/userStats';
 import { SocketService } from '../services/socket.service';
 import { interval } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { RaceTextResponse } from '../interfaces/raceText';
 
 @Component({
   selector: 'app-typing',
@@ -19,9 +21,9 @@ import { interval } from 'rxjs';
   styleUrls: ['./typing.component.css'],
 })
 export class TypingComponent implements OnInit, OnDestroy, OnChanges {
-  dummyText: string = "Some dummy text I've typed just now.";
+  raceText: string = 'loading quote...';
 
-  words: string[] = this.dummyText.split(/\s+/);
+  words: string[] = this.raceText.split(/\s+/);
 
   userInput = '';
   currentIndex = 0;
@@ -38,7 +40,7 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
   private realTimeWPMTimer: any;
   private intervalSubscription: any;
 
-  constructor(private socketService: SocketService) {}
+  constructor(private socketService: SocketService, private http: HttpClient) {}
 
   @Input() countdown!: number;
   @Input() practiceCountdown!: number;
@@ -50,6 +52,16 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
   userStats: UserStats = new UserStats();
 
   ngOnInit(): void {
+    if (this.roomId) {
+      this.socketService.onRaceText().subscribe((text) => {
+        this.raceText = text;
+        this.words = this.raceText.split(/\s+/);
+      });
+    } else {
+      // this.fetchRaceText(200);
+      this.fetchRaceText(40);
+    }
+
     if (this.practiceCountdown) {
       this.startPracticeCountdown();
       this.countdown = this.practiceCountdown;
@@ -67,6 +79,24 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  fetchRaceText(minLength: number) {
+    this.http
+      .get<RaceTextResponse>(
+        `http://localhost:8000/race-text?minLength=${minLength}`
+      )
+      .subscribe({
+        next: (data) => {
+          // console.log('quote data received:', data);
+          this.raceText = data.content;
+          this.words = this.raceText.split(/\s+/);
+        },
+        error: (err) => {
+          console.error('Failed to fetch race text', err);
+          this.raceText = 'Failed to load quote.';
+          this.words = this.raceText.split(/\s+/);
+        },
+      });
+  }
   private callStartRace() {
     if (!this.waitingMode) {
       this.startRace();
