@@ -7,6 +7,8 @@ const crypto = require('crypto');
 const axios = require('axios');
 const https = require('https');
 
+const agent = new https.Agent({ rejectUnauthorized: false });
+
 const MAX_USERS_PER_ROOM = 10;
 const ROOM_FILL_TIMEOUT = 20;
 
@@ -24,7 +26,27 @@ const io = new Server(server, {
 app.use(cors());
 
 app.get('/', (req, res) => {
-	res.send('Server is running');
+	res.send('Server running on port 8000');
+});
+
+app.get('/race-text', async (req, res) => {
+	try {
+		const { minLength, maxLength } = req.query;
+
+		const params = {};
+		if (minLength) params.minLength = minLength;
+		if (maxLength) params.maxLength = maxLength;
+
+		const response = await axios.get('https://api.quotable.io/random', {
+			httpsAgent: agent,
+			params,
+		});
+
+		res.json(response.data);
+	} catch (error) {
+		console.error('Failed to fetch race text', error);
+		res.status(500).json({ error: 'Failed to fetch race text' });
+	}
 });
 
 app.post('/create-room', (req, res) => {
