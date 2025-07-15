@@ -4,7 +4,10 @@
     [roomUsers]="roomUsers"
     [countdown]="countdown"
     [roomId]="roomId"
-  ></app-typing>
+    [text]="raceText"
+  >
+    ></app-typing
+  >
   <div *ngIf="roomUsers.length > 0" class="m-4">
     <ul class="list-none p-0">
       <p *ngIf="totalRaceTime" class="text-lg text-white">

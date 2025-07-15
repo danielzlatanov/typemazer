@@ -18,6 +18,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   totalRaceTime!: number;
   waitingMode: boolean = true;
   roomUserStats!: IRoomUserStats;
+  raceText: string = '';
 
   private unsubscriber: Subject<void> = new Subject<void>();
   private isCountdownFinished: boolean = false;
@@ -60,6 +61,10 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         history.pushState(null, '');
       });
+
+    this.socketService.onRaceText().subscribe((text: string) => {
+      this.raceText = text;
+    });
 
     this.socketService.onCountdownTimerStarted().subscribe(() => {
       console.log('Countdown timer started');

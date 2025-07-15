@@ -47,6 +47,8 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
   @Input() waitingMode: boolean = false;
   @Input() roomUsers: IRoomUser[] = [];
   @Input() roomId: string | null = null;
+  @Input() text: string = '';
+
   @ViewChild('textInput') textInput!: ElementRef;
 
   userStats: UserStats = new UserStats();
@@ -74,6 +76,11 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if ('text' in changes && this.text) {
+      this.raceText = this.text;
+      this.words = this.raceText.split(/\s+/);
+    }
+
     if ('waitingMode' in changes) {
       this.callStartRace();
     }
