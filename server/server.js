@@ -25,7 +25,19 @@ app.get('/', (req, res) => {
 });
 
 app.post('/create-room', (req, res) => {
-	const roomId = Math.floor(Math.random() * 10000).toString();
+	let roomId;
+	const MAX_ATTEMPTS = 10;
+	let attempts = 0;
+
+	do {
+		roomId = crypto.randomBytes(8).toString('hex');
+		attempts++;
+	} while (roomUsers[roomId] && attempts < MAX_ATTEMPTS);
+
+	if (roomUsers[roomId]) {
+		return res.status(500).send({ error: 'Could not generate unique room ID' });
+	}
+
 	res.send({ roomId });
 });
 
