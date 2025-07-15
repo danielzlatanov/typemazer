@@ -112,4 +112,12 @@ export class SocketService {
       );
     });
   }
+
+  onRaceText(): Observable<string> {
+    return new Observable((observer) => {
+      this.socket.on('race-text', (text: string) => {
+        observer.next(text);
+      });
+    });
+  }
 }
