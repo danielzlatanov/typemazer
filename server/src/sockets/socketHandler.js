@@ -1,0 +1,18 @@
+const roomController = require('../controllers/roomController');
+
+function socketHandler(io) {
+	io.on('connection', socket => {
+		console.log('A user connected, user ID:', socket.id);
+
+		socket.on('join-room', data => {
+			roomController.joinRoom(socket, io, data);
+		});
+
+		socket.on('disconnect', () => {
+			roomController.disconnect(socket, io);
+			console.log('User disconnected, user ID:', socket.id);
+		});
+	});
+}
+
+module.exports = socketHandler;
