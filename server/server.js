@@ -3,6 +3,9 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const { Server } = require('socket.io');
+const crypto = require('crypto');
+const axios = require('axios');
+const https = require('https');
 
 const PORT = process.env.PORT || 8000;
 
@@ -36,6 +39,13 @@ io.on('connection', socket => {
 
 	socket.on('join-room', data => {
 		const { roomId, username } = data;
+
+		const cleanUsername = sanitizeUsername(username);
+		if (!cleanUsername) {
+			console.log(`Invalid or empty username from user ${socket.id}`);
+			socket.emit('join-rejected', { reason: 'invalid-username' });
+			return;
+		}
 
 		if (!roomUsers[roomId]) {
 			roomUsers[roomId] = [];
@@ -133,7 +143,7 @@ function startCountdownTimer(roomId) {
 	io.to(roomId).emit('countdown-timer-started');
 
 	// let countdown = 10;
-	let countdown = 1;
+	let countdown = 3;
 	const intervalId = setInterval(() => {
 		io.to(roomId).emit('countdown-update', countdown);
 		countdown--;
@@ -182,6 +192,13 @@ function removeUserFromRooms(userId) {
 		roomUsers[roomId] = roomUsers[roomId].filter(user => user.id !== userId);
 		io.to(roomId).emit('update-users', roomUsers[roomId]);
 	}
+}
+
+function sanitizeUsername(name) {
+	if (!name || typeof name !== 'string') return null;
+	const trimmed = name.trim();
+	const valid = /^[\w\-]{1,20}$/.test(trimmed);
+	return valid ? trimmed : null;
 }
 
 server.listen(PORT, () => {
