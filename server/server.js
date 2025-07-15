@@ -75,7 +75,7 @@ const roomFillTimers = {};
 io.on('connection', socket => {
 	console.log('A user connected, user ID: ' + socket.id);
 
-	socket.on('join-room', data => {
+	socket.on('join-room', async data => {
 		const { roomId, username } = data;
 
 		if (!roomId || typeof roomId !== 'string' || roomId.trim() === '') {
@@ -96,6 +96,18 @@ io.on('connection', socket => {
 			roomState[roomId] = { countdownTimerActive: false, countdownTimerFinished: false };
 			roomRaceTime[roomId] = 20; //! fixed initially
 			usersFinishedByRoom[roomId] = new Set();
+
+			try {
+				const response = await axios.get('https://api.quotable.io/random', {
+					httpsAgent: agent,
+					params: { minLength: 50, maxLength: 150 },
+				});
+				roomState[roomId].text = response.data.content;
+				console.log(`Race text for room ${roomId} initialized:`, roomState[roomId].text);
+			} catch (err) {
+				console.error(`Failed to fetch race text for room ${roomId}:`, err);
+				roomState[roomId].text = 'Error fetching text, please try again.';
+			}
 		}
 
 		if (roomState[roomId].countdownTimerFinished) {
@@ -116,8 +128,10 @@ io.on('connection', socket => {
 		};
 
 		roomUsers[roomId].push(userData);
-
 		socket.join(roomId);
+
+		socket.emit('race-text', roomState[roomId].text);
+
 		io.to(roomId).emit('update-users', getRoomUsers(roomId));
 
 		if (roomUsers[roomId].length === MAX_USERS_PER_ROOM) {
