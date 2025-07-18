@@ -1,10 +1,6 @@
-const axios = require('axios');
-const https = require('https');
-
-const agent = new https.Agent({ rejectUnauthorized: false });
-
 const MAX_USERS_PER_ROOM = 10;
-const ROOM_FILL_TIMEOUT = 20;
+// const ROOM_FILL_TIMEOUT = 20;
+const ROOM_FILL_TIMEOUT = 1;
 
 const roomUsers = {};
 const roomState = {};

@@ -7,9 +7,19 @@ const { Server } = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
+const allowedOrigins = ['http://localhost:4200'];
+
+app.use(express.json());
+app.use(
+	cors({
+		origin: allowedOrigins,
+		methods: ['GET', 'POST'],
+	})
+);
+
 const io = new Server(server, {
 	cors: {
-		origin: ['http://localhost:4200'],
+		origin: allowedOrigins,
 		methods: ['GET', 'POST'],
 	},
 });
@@ -18,9 +28,6 @@ const indexRoutes = require('./src/routes/index.js');
 const raceRoutes = require('./src/routes/raceRoutes.js');
 const roomRoutes = require('./src/routes/roomRoutes.js');
 const socketHandler = require('./src/sockets/socketHandler.js');
-
-app.use(cors());
-app.use(express.json());
 
 app.use('/', indexRoutes);
 app.use('/', raceRoutes);

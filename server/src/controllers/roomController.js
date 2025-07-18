@@ -4,7 +4,7 @@ const raceService = require('../services/raceService.js');
 
 async function createRoom(req, res) {
 	let roomId;
-	const MAX_ATTEMPTS = 10;
+	const MAX_ATTEMPTS = 3;
 	let attempts = 0;
 
 	do {
@@ -75,14 +75,12 @@ function disconnect(socket, io) {
 	const roomId = roomService.findRoomIdByUserId(socket.id);
 	roomService.removeUserFromRooms(socket.id, io);
 
-	if (!roomService.roomUsers[roomId] || roomService.roomUsers[roomId].length === 0) {
+	if (roomId && (!roomService.roomUsers[roomId] || roomService.roomUsers[roomId].length === 0)) {
 		if (roomService.roomFillTimers[roomId]) {
 			clearTimeout(roomService.roomFillTimers[roomId]);
 			delete roomService.roomFillTimers[roomId];
 		}
-	}
 
-	if (roomId && (!roomService.roomUsers[roomId] || roomService.roomUsers[roomId].length === 0)) {
 		delete roomService.roomRaceTime[roomId];
 		delete roomService.roomState[roomId];
 		delete roomService.roomUsers[roomId];
