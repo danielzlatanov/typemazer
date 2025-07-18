@@ -14,10 +14,10 @@ const io = new Server(server, {
 	},
 });
 
-const indexRoutes = require('./src/controllers/routes/index');
-const raceRoutes = require('./src/controllers/routes/raceRoutes');
-const roomRoutes = require('./src/controllers/routes/roomRoutes');
-const socketHandler = require('./src/sockets/socketHandler');
+const indexRoutes = require('./src/routes/index.js');
+const raceRoutes = require('./src/routes/raceRoutes.js');
+const roomRoutes = require('./src/routes/roomRoutes.js');
+const socketHandler = require('./src/sockets/socketHandler.js');
 
 app.use(cors());
 app.use(express.json());

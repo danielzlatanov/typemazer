@@ -1,4 +1,4 @@
-const roomController = require('../controllers/roomController');
+const roomController = require('../controllers/roomController.js');
 
 function socketHandler(io) {
 	io.on('connection', socket => {

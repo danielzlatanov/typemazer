@@ -1,4 +1,4 @@
-const raceService = require('../../services/raceService');
+const raceService = require('../services/raceService.js');
 
 async function getRaceText(req, res) {
 	const { minLength, maxLength } = req.query;

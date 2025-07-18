@@ -1,6 +1,6 @@
 const crypto = require('crypto');
-const roomService = require('../services/roomService');
-const raceService = require('../services/raceService');
+const roomService = require('../services/roomService.js');
+const raceService = require('../services/raceService.js');
 
 async function createRoom(req, res) {
 	let roomId;
