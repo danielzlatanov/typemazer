@@ -1,4 +1,5 @@
 require('dotenv').config();
+const config = require('./config.js');
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
@@ -7,7 +8,7 @@ const { Server } = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
-const allowedOrigins = ['http://localhost:4200'];
+const allowedOrigins = config.CORS_ORIGINS;
 
 app.use(express.json());
 app.use(
@@ -35,7 +36,6 @@ app.use('/', roomRoutes);
 
 socketHandler(io);
 
-const PORT = process.env.PORT || 8000;
-server.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
+server.listen(config.PORT, () => {
+	console.log(`Server is running on port ${config.PORT}`);
 });
