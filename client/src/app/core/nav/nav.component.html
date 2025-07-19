@@ -1,35 +1,57 @@
-<nav class="bg-gray-800 p-4">
-  <ul class="flex justify-center space-x-8">
-    <li class="flex flex-col items-center">
-      <svg class="w-6 h-6 text-white mb-1">
-        <circle cx="8" cy="8" r="8" fill="gray" />
-      </svg>
-      <a class="text-white">home</a>
-    </li>
+<nav class="bg-gray-800 rounded-md px-4 py-2 mx-auto mt-2 max-w-fit z-50 text-sm">
+  <div class="flex items-center gap-6">
+    <a routerLink="/" class="flex items-center gap-1">
+      <img src="/assets/nav.svg" alt="logo" class="w-6 h-6" />
+    </a>
 
-    <li class="flex flex-col items-center">
-      <svg class="w-6 h-6 text-white mb-1">
-        <circle cx="8" cy="8" r="8" fill="gray" />
-      </svg>
-      <a class="text-white">play</a>
-    </li>
+    <a routerLink="/" class="text-white hover:text-green-400 transition"
+      >home</a
+    >
 
-    <li class="flex flex-col items-center">
-      <svg class="w-6 h-6 text-white mb-1">
-        <circle cx="8" cy="8" r="8" fill="gray" />
-      </svg>
-      <a class="text-white">profile</a>
-    </li>
+    <div class="relative">
+      <button
+        type="button"
+        class="flex items-center gap-1 bg-transparent border-0 p-0 m-0 text-white hover:text-green-400 cursor-pointer"
+      >
+        play
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+      <div
+        class="absolute left-0 top-full w-28 bg-gray-800 rounded-b-md overflow-hidden transition z-50"
+      >
+        <div class="pt-[10px]">
+          <a
+            routerLink="/type/practice"
+            class="block px-4 py-2 text-white hover:bg-gray-700"
+            >practice</a
+          >
+          <a
+            routerLink="/type/room"
+            class="block px-4 py-2 text-white hover:bg-gray-700"
+            >multiplayer</a
+          >
+        </div>
+      </div>
+    </div>
 
-    <li class="flex flex-col items-center">
-      <svg class="w-6 h-6 text-white mb-1">
-        <circle cx="8" cy="8" r="8" fill="gray" />
-      </svg>
-      <a class="text-white">donate</a>
+    <a routerLink="/profile" class="text-white hover:text-green-400 transition"
+      >profile</a
+    >
 
-      <!-- ! this could be only icon to not annoy user? -->
-
-      
-    </li>
-  </ul>
+    <a routerLink="/donate" class="text-white hover:text-green-400 transition"
+      >donate</a
+    >
+  </div>
 </nav>
