@@ -3,12 +3,16 @@
 >
   <div class="flex items-center gap-6">
     <a routerLink="/" class="flex items-center gap-1">
-      <img src="/assets/nav.svg" alt="logo" class="w-6 h-6" />
+      <img src="/assets/nav.svg" alt="logo" class="w-7 h-7" />
     </a>
 
-    <a routerLink="/" class="text-white hover:text-green-400 transition"
-      >home</a
+    <a
+      routerLink="/"
+      draggable="false"
+      class="text-white hover:text-green-400 transition"
     >
+      <i class="fas fa-house text-xs mr-0.5"></i> home
+    </a>
 
     <div class="relative">
       <button
@@ -17,49 +21,54 @@
         (click)="toggleDropdown()"
         class="flex items-center gap-1 bg-transparent border-0 p-0 m-0 text-white hover:text-green-400 cursor-pointer"
       >
+        <i
+          class="fas mt-0.5 fa-play text-xs mr-0.5 transition-transform duration-200 ease-in-out"
+          [class.rotate-90]="isDropdownOpen"
+        ></i>
         play
-        <svg
-          class="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
       </button>
       <div
         #dropdownMenu
         *ngIf="isDropdownOpen"
-        class="absolute left-0 top-full w-28 bg-gray-800 rounded-b-md overflow-hidden transition z-50"
+        class="absolute left-0 top-full w-32 bg-gray-800 rounded-b-md overflow-hidden transition z-50"
       >
         <div class="pt-[10px]">
           <a
             routerLink="/type/practice"
+            draggable="false"
             (click)="closeDropdown()"
-            class="block px-4 py-2 text-white hover:bg-gray-700"
-            >practice</a
+            class="px-4 py-2 text-white hover:bg-gray-700 flex items-center gap-0.5"
           >
+            <i class="fas fa-user text-xs w-4 h-4 ml-0.5"></i>
+            practice
+          </a>
           <a
             routerLink="/type/room"
+            draggable="false"
             (click)="closeDropdown()"
-            class="block px-4 py-2 text-white hover:bg-gray-700"
-            >multiplayer</a
+            class="px-4 py-2 text-white hover:bg-gray-700 flex items-center gap-1"
           >
+            <i class="fas fa-user-friends text-xs w-4 h-4"></i>
+            multiplayer
+          </a>
         </div>
       </div>
     </div>
 
-    <a routerLink="/profile" class="text-white hover:text-green-400 transition"
-      >profile</a
+    <a
+      routerLink="/profile"
+      draggable="false"
+      class="text-white hover:text-green-400 transition"
     >
+      <i class="fas fa-circle-user text-xs mr-0.5"></i> profile
+    </a>
 
-    <a routerLink="/donate" class="text-white hover:text-green-400 transition"
-      >donate</a
+    <a
+      routerLink="/donate"
+      draggable="false"
+      class="text-white hover:text-green-400 transition"
     >
+      <i class="fas fa-circle-dollar-to-slot text-xs mr-0.5"></i> donate
+    </a>
   </div>
 </nav>
