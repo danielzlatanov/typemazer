@@ -1,9 +1,36 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css',
+  animations: [
+    trigger('dropdownAnim', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          clipPath: 'inset(0 0 100% 0)',
+        }),
+        animate(
+          '200ms ease-out',
+          style({
+            opacity: 1,
+            clipPath: 'inset(0 0 0% 0)',
+          })
+        ),
+      ]),
+      transition(':leave', [
+        animate(
+          '150ms ease-in',
+          style({
+            opacity: 0,
+            clipPath: 'inset(0 0 100% 0)',
+          })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class NavComponent {
   isDropdownOpen = false;

@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 html {
-  background-color: rgb(28, 27, 34);
+  background: linear-gradient(180deg, #16151b 0%, #1b1822 100%);
   font-family: "Outfit", sans-serif;
 }
 
@@ -13,7 +13,6 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: rgb(28, 27, 34);
 }
 
 *,

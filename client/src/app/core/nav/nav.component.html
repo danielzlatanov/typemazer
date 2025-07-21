@@ -29,10 +29,11 @@
       </button>
       <div
         #dropdownMenu
+        @dropdownAnim
         *ngIf="isDropdownOpen"
         class="absolute left-0 top-full w-32 bg-gray-800 rounded-b-md overflow-hidden transition z-50"
       >
-        <div class="pt-[10px]">
+        <div class="pt-[12px]">
           <a
             routerLink="/type/practice"
             draggable="false"
