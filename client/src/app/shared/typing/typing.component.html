@@ -1,12 +1,14 @@
 <div class="mx-4">
-  <p class="text-xl m-3 font-bold text-green-500" *ngIf="countdown > 0">
-    starting in {{ countdown }}
-  </p>
-  <span
-    *ngFor="let word of words; let i = index"
-    class="select-none text-2xl text-white"
-  >
+  @if (countdown > 0) {
+    <p class="text-xl m-3 font-bold text-green-500">
+      starting in {{ countdown }}
+    </p>
+  }
+  @for (word of words; track word; let i = $index) {
     <span
+      class="select-none text-2xl text-white"
+      >
+      <span
       [ngClass]="{
         'text-green-500 underline': i === currentIndex,
         'text-red-600':
@@ -14,21 +16,22 @@
           userInput &&
           userInput !== words[currentIndex].slice(0, userInput.length)
       }"
-    >
-      {{ word }}</span
-    >
-    {{ i < words.length - 1 ? " " : "" }}
-  </span>
-  <input
-    type="text"
-    autocomplete="off"
-    #textInput
-    [(ngModel)]="userInput"
-    (input)="onInputChange()"
-    (keydown.space)="onSpaceKey($event)"
-    (paste)="handlePaste($event)"
-    (drop)="handleDrop($event)"
-    class="focus:outline-none border-none pl-4 py-2 mt-4 block rounded-lg transition-all duration-300 ease-in-out placeholder-white"
+        >
+        {{ word }}</span
+        >
+        {{ i < words.length - 1 ? " " : "" }}
+      </span>
+    }
+    <input
+      type="text"
+      autocomplete="off"
+      #textInput
+      [(ngModel)]="userInput"
+      (input)="onInputChange()"
+      (keydown.space)="onSpaceKey($event)"
+      (paste)="handlePaste($event)"
+      (drop)="handleDrop($event)"
+      class="focus:outline-none border-none pl-4 py-2 mt-4 block rounded-lg transition-all duration-300 ease-in-out placeholder-white"
     [ngClass]="{
       'bg-rose-200 text-gray-600':
         currentIndex <= words.length - 1 &&
@@ -36,19 +39,33 @@
         userInput !== words[currentIndex].slice(0, userInput.length),
       'pointer-events-none opacity-100': countdown > 0 || waitingMode,
     }"
-    [disabled]="countdown > 0 || waitingMode"
+      [disabled]="countdown > 0 || waitingMode"
     placeholder="{{
       countdown > 0 || waitingMode ? 'Type the text here...' : ''
     }}"
-    [style.height.px]="countdown > 0 || waitingMode ? 45 : 50"
-  />
+      [style.height.px]="countdown > 0 || waitingMode ? 45 : 50"
+      />
 
-  <div class="text-green-500 font-bold mt-2" *ngIf="practiceCountdown">
-    <p *ngIf="!endTime && !waitingMode">{{ realTimeWpm || 0 }} wpm</p>
-    <p *ngIf="endTime">net: {{ netWpm }} wpm</p>
-    <p *ngIf="endTime">gross/raw: {{ grossWpm }} wpm</p>
-    <p *ngIf="endTime">accuracy: {{ totalAccuracy.toFixed(1) }} %</p>
-    <p *ngIf="endTime">time: {{ formatElapsedTime(totalElapsedTime) }}</p>
-    <p *ngIf="endTime">errors: {{ errors }}</p>
+    @if (practiceCountdown) {
+      <div class="text-green-500 font-bold mt-2">
+        @if (!endTime && !waitingMode) {
+          <p>{{ realTimeWpm || 0 }} wpm</p>
+        }
+        @if (endTime) {
+          <p>net: {{ netWpm }} wpm</p>
+        }
+        @if (endTime) {
+          <p>gross/raw: {{ grossWpm }} wpm</p>
+        }
+        @if (endTime) {
+          <p>accuracy: {{ totalAccuracy.toFixed(1) }} %</p>
+        }
+        @if (endTime) {
+          <p>time: {{ formatElapsedTime(totalElapsedTime) }}</p>
+        }
+        @if (endTime) {
+          <p>errors: {{ errors }}</p>
+        }
+      </div>
+    }
   </div>
-</div>

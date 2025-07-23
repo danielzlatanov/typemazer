@@ -1,4 +1,4 @@
-<ng-container *ngIf="roomUser && roomUser.username">
+@if (roomUser && roomUser.username) {
   <div
     #myCharacter
     [ngClass]="{
@@ -6,7 +6,7 @@
       'w-10': roomUser.username.length < 3
     }"
     class="absolute h-10 top-0 left-0 bg-green-500 rounded-lg transition-left duration-300 ease-linear text-black text-lg lowercase flex items-center justify-center px-1"
-  >
+    >
     <span>{{ roomUser.username | slice : 0 : 5 }}</span>
   </div>
-</ng-container>
+}
