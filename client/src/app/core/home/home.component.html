@@ -12,6 +12,7 @@
       <div class="relative inline-block w-max">
         <h1
           class="font-extrabold leading-none"
+          [ngStyle]="{ 'font-size': titleFontSize }"
         >
           <span
             class="text-transparent"
@@ -26,9 +27,10 @@
         </h1>
 
         <p
-          class="text-gray-400 lg:absolute lg:left-1/2 lg:top-48 lg:-translate-x-1/2 mb-16 lg:mb-0"
+          class="text-gray-400 lg:absolute lg:left-1/2 lg:top-48 lg:-translate-x-1/2 mb-16 lg:mb-0 whitespace-nowrap"
+          [ngStyle]="{ 'font-size': descFontSize }"
         >
-          <span *ngIf="!descMultiline">outtype the maze - </span>
+          <span class="hidden lg:inline"> outtype the maze - </span>
           race your friends and escape first
         </p>
       </div>
