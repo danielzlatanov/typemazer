@@ -2,10 +2,10 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { IRoomUser } from '../interfaces/user';
 
 @Component({
-    selector: 'app-race-animation',
-    templateUrl: './race-animation.component.html',
-    styleUrls: ['./race-animation.component.css'],
-    standalone: false
+  selector: 'app-race-animation',
+  templateUrl: './race-animation.component.html',
+  styleUrls: ['./race-animation.component.css'],
+  standalone: false,
 })
 export class RaceAnimationComponent implements OnInit {
   @Input() userProgress: number = 0;

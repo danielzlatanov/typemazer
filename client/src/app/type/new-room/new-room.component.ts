@@ -4,10 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-new-room',
-    templateUrl: './new-room.component.html',
-    styleUrls: ['./new-room.component.css'],
-    standalone: false
+  selector: 'app-new-room',
+  templateUrl: './new-room.component.html',
+  styleUrls: ['./new-room.component.css'],
+  standalone: false,
 })
 export class NewRoomComponent {
   roomId!: string;
@@ -16,7 +16,7 @@ export class NewRoomComponent {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private socketService: SocketService
+    private socketService: SocketService,
   ) {}
 
   createRoom() {

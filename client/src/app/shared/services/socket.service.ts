@@ -73,7 +73,7 @@ export class SocketService {
         'update-user-stats',
         (updatedUserStats: IRoomUserStats) => {
           observer.next(updatedUserStats);
-        }
+        },
       );
     });
   }
@@ -108,7 +108,7 @@ export class SocketService {
         'user-finished',
         (data: { userId: string; place: number }) => {
           observer.next(data);
-        }
+        },
       );
     });
   }

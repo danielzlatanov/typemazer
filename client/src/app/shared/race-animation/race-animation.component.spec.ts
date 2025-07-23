@@ -8,7 +8,7 @@ describe('RaceAnimationComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [RaceAnimationComponent]
+      declarations: [RaceAnimationComponent],
     });
     fixture = TestBed.createComponent(RaceAnimationComponent);
     component = fixture.componentInstance;

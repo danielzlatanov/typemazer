@@ -8,7 +8,7 @@ describe('TypingComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TypingComponent]
+      declarations: [TypingComponent],
     });
     fixture = TestBed.createComponent(TypingComponent);
     component = fixture.componentInstance;

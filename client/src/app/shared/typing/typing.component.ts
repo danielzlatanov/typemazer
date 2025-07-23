@@ -16,10 +16,10 @@ import { HttpClient } from '@angular/common/http';
 import { RaceTextResponse } from '../interfaces/raceText';
 
 @Component({
-    selector: 'app-typing',
-    templateUrl: './typing.component.html',
-    styleUrls: ['./typing.component.css'],
-    standalone: false
+  selector: 'app-typing',
+  templateUrl: './typing.component.html',
+  styleUrls: ['./typing.component.css'],
+  standalone: false,
 })
 export class TypingComponent implements OnInit, OnDestroy, OnChanges {
   raceText: string = 'loading quote...';
@@ -41,7 +41,10 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
   private realTimeWPMTimer: any;
   private intervalSubscription: any;
 
-  constructor(private socketService: SocketService, private http: HttpClient) {}
+  constructor(
+    private socketService: SocketService,
+    private http: HttpClient,
+  ) {}
 
   @Input() countdown!: number;
   @Input() practiceCountdown!: number;
@@ -91,7 +94,7 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
   fetchRaceText(minLength: number) {
     this.http
       .get<RaceTextResponse>(
-        `http://localhost:8000/race-text?minLength=${minLength}`
+        `http://localhost:8000/race-text?minLength=${minLength}`,
       )
       .subscribe({
         next: (data) => {
@@ -255,7 +258,7 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
   calculateNetWPM(elapsedTime: number) {
     this.userStats.netWpm = this.calculateWPM(
       this.totalCorrectChars,
-      elapsedTime
+      elapsedTime,
     );
     this.netWpm = this.calculateWPM(this.totalCorrectChars, elapsedTime);
   }
@@ -265,7 +268,7 @@ export class TypingComponent implements OnInit, OnDestroy, OnChanges {
     this.realTimeWpm = this.calculateWPM(this.totalCorrectChars, elapsedTime);
     this.userStats.realTimeWpm = this.calculateWPM(
       this.totalCorrectChars,
-      elapsedTime
+      elapsedTime,
     );
   }
 
