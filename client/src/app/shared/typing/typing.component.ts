@@ -16,9 +16,10 @@ import { HttpClient } from '@angular/common/http';
 import { RaceTextResponse } from '../interfaces/raceText';
 
 @Component({
-  selector: 'app-typing',
-  templateUrl: './typing.component.html',
-  styleUrls: ['./typing.component.css'],
+    selector: 'app-typing',
+    templateUrl: './typing.component.html',
+    styleUrls: ['./typing.component.css'],
+    standalone: false
 })
 export class TypingComponent implements OnInit, OnDestroy, OnChanges {
   raceText: string = 'loading quote...';

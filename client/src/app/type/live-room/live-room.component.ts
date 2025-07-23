@@ -6,9 +6,10 @@ import { IRoomUser } from 'src/app/shared/interfaces/user';
 import { SocketService } from 'src/app/shared/services/socket.service';
 
 @Component({
-  selector: 'app-live-room',
-  templateUrl: './live-room.component.html',
-  styleUrls: ['./live-room.component.css'],
+    selector: 'app-live-room',
+    templateUrl: './live-room.component.html',
+    styleUrls: ['./live-room.component.css'],
+    standalone: false
 })
 export class LiveRoomComponent implements OnInit, OnDestroy {
   roomId: string | null;
