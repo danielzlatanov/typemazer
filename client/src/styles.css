@@ -5,20 +5,20 @@
 @tailwind utilities;
 
 html {
-  background: linear-gradient(180deg, #16151b 0%, #1b1822 100%);
   font-family: "Outfit", sans-serif;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  background-color: #1b1823;
+  min-height: calc(100vh - 8px);
 }
 
 a {
