@@ -1,24 +1,23 @@
 <div class="mx-4">
   @if (countdown > 0) {
-    <p class="text-xl m-3 font-bold text-green-500">
-      starting in {{ countdown }}
-    </p>
-  }
-  @for (word of words; track word; let i = $index) {
-    <span class="select-none text-2xl text-white">
-      <span
-        [ngClass]="{
-          'text-green-500 underline': i === currentIndex,
+  <p class="text-xl m-3 font-bold text-app_green">
+    starting in {{ countdown }}
+  </p>
+  } @for (word of words; track word; let i = $index) {
+  <span class="select-none text-2xl text-white">
+    <span
+      [ngClass]="{
+          'text-app_green underline': i === currentIndex,
           'text-red-600':
             i === currentIndex &&
             userInput &&
             userInput !== words[currentIndex].slice(0, userInput.length),
         }"
-      >
-        {{ word }}</span
-      >
-      {{ i < words.length - 1 ? " " : "" }}
-    </span>
+    >
+      {{ word }}</span
+    >
+    {{ i < words.length - 1 ? " " : "" }}
+  </span>
   }
   <input
     type="text"
@@ -45,25 +44,20 @@
   />
 
   @if (practiceCountdown) {
-    <div class="text-green-500 font-bold mt-2">
-      @if (!endTime && !waitingMode) {
-        <p>{{ realTimeWpm || 0 }} wpm</p>
-      }
-      @if (endTime) {
-        <p>net: {{ netWpm }} wpm</p>
-      }
-      @if (endTime) {
-        <p>gross/raw: {{ grossWpm }} wpm</p>
-      }
-      @if (endTime) {
-        <p>accuracy: {{ totalAccuracy.toFixed(1) }} %</p>
-      }
-      @if (endTime) {
-        <p>time: {{ formatElapsedTime(totalElapsedTime) }}</p>
-      }
-      @if (endTime) {
-        <p>errors: {{ errors }}</p>
-      }
-    </div>
+  <div class="text-app_green font-bold mt-2">
+    @if (!endTime && !waitingMode) {
+    <p>{{ realTimeWpm || 0 }} wpm</p>
+    } @if (endTime) {
+    <p>net: {{ netWpm }} wpm</p>
+    } @if (endTime) {
+    <p>gross/raw: {{ grossWpm }} wpm</p>
+    } @if (endTime) {
+    <p>accuracy: {{ totalAccuracy.toFixed(1) }} %</p>
+    } @if (endTime) {
+    <p>time: {{ formatElapsedTime(totalElapsedTime) }}</p>
+    } @if (endTime) {
+    <p>errors: {{ errors }}</p>
+    }
+  </div>
   }
 </div>

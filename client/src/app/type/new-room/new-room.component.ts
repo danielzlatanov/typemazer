@@ -16,7 +16,7 @@ export class NewRoomComponent {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private socketService: SocketService,
+    private socketService: SocketService
   ) {}
 
   createRoom() {

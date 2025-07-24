@@ -27,7 +27,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private socketService: SocketService,
+    private socketService: SocketService
   ) {
     this.roomId = this.route.snapshot.paramMap.get('roomId');
 
@@ -146,7 +146,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   private sortUsers(users: IRoomUser[], currentUsername: string): IRoomUser[] {
     const currentUserIndex = users.findIndex(
-      (user) => user.username === currentUsername,
+      (user) => user.username === currentUsername
     );
 
     if (currentUserIndex !== -1) {

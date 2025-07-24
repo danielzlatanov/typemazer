@@ -17,7 +17,7 @@ import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
           style({
             opacity: 1,
             clipPath: 'inset(0 0 0% 0)',
-          }),
+          })
         ),
       ]),
       transition(':leave', [
@@ -26,7 +26,7 @@ import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
           style({
             opacity: 0,
             clipPath: 'inset(0 0 100% 0)',
-          }),
+          })
         ),
       ]),
     ]),
@@ -50,10 +50,10 @@ export class NavComponent {
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {
     const clickedInsideButton = this.dropdownBtn?.nativeElement.contains(
-      event.target,
+      event.target
     );
     const clickedInsideMenu = this.dropdownMenu?.nativeElement.contains(
-      event.target,
+      event.target
     );
 
     if (!clickedInsideButton && !clickedInsideMenu) {

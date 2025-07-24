@@ -1,63 +1,53 @@
 @if (isLiveRoomVisible()) {
-  <div>
-    <app-typing
-      [waitingMode]="waitingMode"
-      [roomUsers]="roomUsers"
-      [countdown]="countdown"
-      [roomId]="roomId"
-      [text]="raceText"
-    >
-      ></app-typing
-    >
-    @if (roomUsers.length > 0) {
-      <div class="m-4">
-        <ul class="list-none p-0">
-          @if (totalRaceTime) {
-            <p class="text-lg text-white">
-              race time:
-              <span
-                [ngClass]="{ 'text-red-600 animate-pulse': totalRaceTime <= 5 }"
-              >
-                {{ totalRaceTime }}
-              </span>
-            </p>
+<div>
+  <app-typing
+    [waitingMode]="waitingMode"
+    [roomUsers]="roomUsers"
+    [countdown]="countdown"
+    [roomId]="roomId"
+    [text]="raceText"
+  >
+    ></app-typing
+  >
+  @if (roomUsers.length > 0) {
+  <div class="m-4">
+    <ul class="list-none p-0">
+      @if (totalRaceTime) {
+      <p class="text-lg text-white">
+        race time:
+        <span [ngClass]="{ 'text-red-600 animate-pulse': totalRaceTime <= 5 }">
+          {{ totalRaceTime }}
+        </span>
+      </p>
+      } @for (user of roomUsers; track user) {
+      <li class="my-2">
+        <div
+          class="flex items-center justify-between relative w-9/12 h-10 text-xl text-white"
+        >
+          <app-race-animation
+            [roomUser]="user"
+            [userProgress]="getUserStatsValue(user.id, 'realTimeWordProgress')"
+          ></app-race-animation>
+          @if ( getUserStatsValue(user.id, "realTimeWordProgress") != 100 ) {
+          <span class="text-app_green absolute -right-56"
+            >{{ getUserStatsValue(user.id, "realTimeWpm") }} wpm</span
+          >
+          } @if ( getUserStatsValue(user.id, "realTimeWordProgress") == 100 ) {
+          <span class="font-semibold absolute -right-56">
+            {{ getUserStatsValue(user.id, "netWpm") }} wpm -
+            <span [ngClass]="user.place == 1 ? 'text-app_green' : ''">
+              {{ user.place }}
+              @if (user.place) {
+              <sup>{{ getPlaceSuffix(user.place) }}</sup>
+              }
+            </span>
+          </span>
           }
-          @for (user of roomUsers; track user) {
-            <li class="my-2">
-              <div
-                class="flex items-center justify-between relative w-9/12 h-10 text-xl text-white"
-              >
-                <app-race-animation
-                  [roomUser]="user"
-                  [userProgress]="
-                    getUserStatsValue(user.id, 'realTimeWordProgress')
-                  "
-                ></app-race-animation>
-                @if (
-                  getUserStatsValue(user.id, "realTimeWordProgress") != 100
-                ) {
-                  <span class="text-green-500 absolute -right-56"
-                    >{{ getUserStatsValue(user.id, "realTimeWpm") }} wpm</span
-                  >
-                }
-                @if (
-                  getUserStatsValue(user.id, "realTimeWordProgress") == 100
-                ) {
-                  <span class="font-semibold absolute -right-56">
-                    {{ getUserStatsValue(user.id, "netWpm") }} wpm -
-                    <span [ngClass]="user.place == 1 ? 'text-green-500' : ''">
-                      {{ user.place }}
-                      @if (user.place) {
-                        <sup>{{ getPlaceSuffix(user.place) }}</sup>
-                      }
-                    </span>
-                  </span>
-                }
-              </div>
-            </li>
-          }
-        </ul>
-      </div>
-    }
+        </div>
+      </li>
+      }
+    </ul>
   </div>
+  }
+</div>
 }
