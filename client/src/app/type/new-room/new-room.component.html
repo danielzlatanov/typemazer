@@ -1,41 +1,55 @@
-<div class="p-col-12 p-md-6 p-lg-4 p-col-align-center">
-  <h1 class="ml-5 text-blue-500">Multiplayer</h1>
+<div class="w-full max-w-sm mx-auto pt-14 px-4">
+  <h1 class="text-center text-2xl font-bold text-app_green mb-6">
+    multiplayer
+  </h1>
 
   <form
     #roomForm="ngForm"
     (ngSubmit)="joinRoom(inputRoomId.value)"
-    class="ml-4 space-y-3"
+    class="space-y-5"
   >
-    <input
-      [(ngModel)]="username"
-      placeholder="username"
-      class="block focus:outline-none border-none pl-4 py-2 mt-4 rounded-md"
-      name="username"
-      autocomplete="off"
-      required
-    />
+    <div>
+      <label for="username" class="block mb-1 text-sm font-medium text-white"
+        >username</label
+      >
+      <input
+        [(ngModel)]="username"
+        id="username"
+        name="username"
+        placeholder="your nickname"
+        autocomplete="off"
+        required
+        class="w-full rounded-md bg-[#2a2733] text-white placeholder-gray-400 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-app_green"
+      />
+    </div>
 
-    <input
-      #inputRoomId="ngModel"
-      placeholder="room ID"
-      class="block focus:outline-none border-none pl-4 py-2 mt-4 rounded-md"
-      name="roomId"
-      autocomplete="off"
-      ngModel
-      required
-    />
+    <div>
+      <label for="roomId" class="block mb-1 text-sm font-medium text-white"
+        >room ID</label
+      >
+      <input
+        #inputRoomId="ngModel"
+        id="roomId"
+        name="roomId"
+        placeholder="room code to join"
+        autocomplete="off"
+        required
+        ngModel
+        class="w-full rounded-md bg-[#2a2733] text-white placeholder-gray-400 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-app_green"
+      />
+    </div>
 
     <button
       type="submit"
-      class="border-none font-semibold leading-3 px-3 py-2 rounded-md transition-all duration-100 ease-in-out"
-      [ngClass]="{
-        'text-black bg-blue-500 hover:bg-blue-600 cursor-pointer':
-          !roomForm.invalid,
-        'bg-gray-400 text-gray-600 cursor-not-allowed': roomForm.invalid,
-      }"
       [disabled]="roomForm.invalid"
+      [ngClass]="{
+        'bg-app_green text-black hover:bg-emerald-400 cursor-pointer':
+          !roomForm.invalid,
+        'bg-gray-600 text-gray-400 cursor-not-allowed': roomForm.invalid
+      }"
+      class="w-full py-2 rounded-md font-semibold text-xs uppercase tracking-wide transition-all duration-150 ease-in-out"
     >
-      Join
+      connect
     </button>
   </form>
 </div>
